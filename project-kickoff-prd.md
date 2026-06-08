@@ -1,11 +1,22 @@
 ---
 name: project-kickoff-prd
-description: Use when starting a new project or feature from scratch. Triggers on rough ideas, "let's build X", "new project", or when no PRD exists yet. Drives multi-turn conversation to co-define product scope, technical direction, and extensibility before any code is written.
+description: Use when starting a new project or feature from scratch, when a rough idea needs to be turned into a structured product spec, or when scope, target users, or success metrics are undefined. Triggers on "let's build X", "new project", "kick off", "write a PRD", "product brief", "what should we build", vague feature requests, or when no PRD exists yet for the work about to start.
 ---
 
 # Project Kickoff — PRD Co-Creation
 
 > **Core constraint:** The Agent is a co-creator, not a note-taker. Think beyond what the user says.
+
+## Quick Reference
+
+| | |
+|---|---|
+| **Use when** | Starting a new project or feature; rough idea needs structured scope |
+| **Skip when** | A PRD already exists for this scope (extend it instead of recreating) |
+| **Output** | `docs/prd.md` |
+| **Sequence** | **PRD** → SPEC → ADR → IMPL PLAN → STATUS |
+| **Iron rule** | Never skip straight to the document. Value is in the dialogue. |
+| **Sibling skills** | [[technical-specification]] · [[architecture-decision-record]] · [[implementation-plan]] · [[status-tracker]] |
 
 ## System Prompt
 

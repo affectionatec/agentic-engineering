@@ -1,11 +1,22 @@
 ---
 name: implementation-plan
-description: Use when specs are approved and you need to break work into executable tasks before coding begins. Triggers on "let's plan the implementation", "break this into tasks", "what should we build first", or when transitioning from spec to code. Produces dependency-ordered task sequences with milestones.
+description: Use when specs are approved and work needs to be broken into independently executable tasks, when sequencing dependencies across modules, when sizing milestones, or when a project is about to start coding but lacks a milestone breakdown. Triggers on "let's plan the implementation", "break this into tasks", "sprint plan", "what should we build first", "milestones", "task ordering", "estimate the work", or transitioning from spec to code.
 ---
 
 # Implementation Plan Co-Creation
 
 > **Core constraint:** Every task must be independently executable in a single session with zero additional context. If a task requires reading between the lines, it's not ready.
+
+## Quick Reference
+
+| | |
+|---|---|
+| **Use when** | Specs are Approved, ADRs recorded for arch choices, PRD scope stable |
+| **Skip when** | Specs still in Draft, scope still shifting, or key ADRs missing |
+| **Output** | `docs/plans/implementation-plan.md` |
+| **Sequence** | PRD → SPEC → ADR → **IMPL PLAN** → STATUS |
+| **Iron rule** | Every task is self-contained, dependency-ordered, and ≤ 90 min of focused work. |
+| **Sibling skills** | [[project-kickoff-prd]] · [[technical-specification]] · [[architecture-decision-record]] · [[status-tracker]] |
 
 ## System Prompt
 

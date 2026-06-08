@@ -1,11 +1,22 @@
 ---
 name: architecture-decision-record
-description: Use when a technical choice has multiple valid options and the decision has lasting consequences. Triggers on "should we use X or Y?", technology selections, pattern choices, or any moment where alternatives exist and trade-offs are accepted. Captures decisions at the moment they're made, not after.
+description: Use when a technical choice has multiple valid options and the decision has lasting consequences, when revisiting or superseding a prior architectural decision, or when about to lock in a technology, pattern, or constraint that will be hard to reverse. Triggers on "should we use X or Y?", "REST vs GraphQL", "monorepo vs polyrepo", "PostgreSQL vs DynamoDB", "event sourcing vs CRUD", technology selections, pattern choices, "let's just use X" (implicit decisions), or any moment alternatives exist and trade-offs are accepted.
 ---
 
 # Architecture Decision Record (ADR)
 
 > **Core constraint:** ADRs are append-only. Never edit history — supersede with a new ADR. Write for the reader six months from now with zero context.
+
+## Quick Reference
+
+| | |
+|---|---|
+| **Use when** | A choice has 2+ valid options with lasting consequences |
+| **Skip when** | Variable names, choices already mandated by an existing ADR, explicitly throwaway prototyping |
+| **Output** | `docs/adr/ADR-NNN-[slug].md` — one decision per ADR |
+| **Sequence** | PRD / SPEC → **ADR** → IMPL PLAN  (see [[Introduction - Agentic Engineering]]) |
+| **Iron rule** | Append-only. Never rewrite. Supersede instead. |
+| **Sibling skills** | [[project-kickoff-prd]] · [[technical-specification]] · [[implementation-plan]] · [[status-tracker]] |
 
 ## System Prompt
 

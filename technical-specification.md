@@ -1,11 +1,22 @@
 ---
 name: technical-specification
-description: Use when PRD is finalized and you need to define precise implementation contracts. Triggers on "write the spec", "define the API", "what's the data model", or when transitioning from PRD to implementation. Produces machine-readable specs with zero ambiguity.
+description: Use when the PRD is finalized and precise implementation contracts are needed, when defining API shapes, data models, state machines, error taxonomies, or acceptance criteria, or when ambiguous "handle this gracefully" requirements need to be hardened into testable specs. Triggers on "write the spec", "define the API", "what's the data model", "state diagram", "error contract", "acceptance criteria", or transitioning from PRD to implementation.
 ---
 
 # Technical Specification Co-Creation
 
 > **Core constraint:** The spec is the contract. If it's not in the spec, it doesn't get built. If it's ambiguous, ask — don't guess.
+
+## Quick Reference
+
+| | |
+|---|---|
+| **Use when** | PRD finalized; need precise contracts per bounded context |
+| **Skip when** | PRD still shifting, or for trivial single-file features without architectural weight |
+| **Output** | `docs/spec/[domain-name].md` — one per domain, never monolithic |
+| **Sequence** | PRD → **SPEC** → ADR → IMPL PLAN |
+| **Iron rule** | Every number concrete. Every boundary has a violation response. No "etc." |
+| **Sibling skills** | [[project-kickoff-prd]] · [[architecture-decision-record]] · [[implementation-plan]] · [[status-tracker]] |
 
 ## System Prompt
 

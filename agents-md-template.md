@@ -1,11 +1,22 @@
 ---
 name: agents-md-template
-description: Use when setting up a new project's agent configuration. Triggers on "create AGENTS.md", "set up agent instructions", "new project setup", or when no AGENTS.md exists yet. Produces the single entry-point file that all AI coding tools read first.
+description: Use when bootstrapping a new repo for AI-assisted development, when no AGENTS.md / CLAUDE.md / copilot-instructions.md / .cursorrules exists yet, or when consolidating scattered tool-specific config into one source of truth. Triggers on "create AGENTS.md", "set up agent instructions", "new project setup", "configure Claude/Cursor/Copilot/Codex", "onboarding a repo", or noticing duplicated agent config across tool-specific files.
 ---
 
 # AGENTS.md Template
 
 > **Design principle:** `AGENTS.md` is the single source of truth. Tool-specific files (CLAUDE.md, copilot-instructions.md, .cursor/rules/) all point here. — [substratia.io](https://substratia.io/blog/agents-md-vs-claude-md/)
+
+## Quick Reference
+
+| | |
+|---|---|
+| **Use when** | Bootstrapping a repo for AI-assisted dev; no AGENTS.md exists yet |
+| **Skip when** | AGENTS.md already exists — edit in place; don't recreate |
+| **Output** | `AGENTS.md` at repo root + one-line pointer files for each tool |
+| **Sequence** | Step 0 — before any documentation chain work begins |
+| **Iron rule** | One source of truth. CLAUDE.md / .cursor / copilot all point here. |
+| **Sibling skills** | [[project-kickoff-prd]] · [[technical-specification]] · [[architecture-decision-record]] · [[implementation-plan]] · [[status-tracker]] |
 
 ---
 

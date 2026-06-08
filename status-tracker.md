@@ -1,11 +1,22 @@
 ---
 name: status-tracker
-description: Use at the start and end of every coding session. Triggers on session start (read STATUS.md first), session end (update STATUS.md last), or when checking project progress. Maintains the living handoff document that gives any Agent — or any new session — full context to resume work immediately.
+description: Use at the start of every coding session (read STATUS.md before any other action), at the end of every session (append handoff log entry), or when checking current progress, last-done work, in-flight tasks, or what's blocked. Triggers on session start/end, "where are we", "pick up where we left off", "handoff", "what was done last session", "resume", or recovering after context loss / new agent session.
 ---
 
 # Status Tracker — Project Status & Progress
 
 > **Core constraint:** This file is the Agent's memory. Read it first, update it last. Every session.
+
+## Quick Reference
+
+| | |
+|---|---|
+| **Use when** | Start of every session (read first), end of every session (update last) |
+| **Skip when** | Never — every session reads STATUS.md before any other action |
+| **Output** | `docs/status.md` — live, with append-only handoff log |
+| **Sequence** | Created when IMPL PLAN starts; updated every session forever |
+| **Iron rule** | Handoff log is append-only, newest first. Never edit past entries. |
+| **Sibling skills** | [[project-kickoff-prd]] · [[technical-specification]] · [[architecture-decision-record]] · [[implementation-plan]] |
 
 ## System Prompt
 

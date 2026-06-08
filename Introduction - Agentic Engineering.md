@@ -16,6 +16,21 @@ A documentation chain that gives Agents full project context from day one, stays
 - New session has no idea what happened last time → **STATUS provides memory**
 - Agent builds the wrong thing → **PRD defines what and why**
 - Agent does tasks in wrong order or scope → **IMPL PLAN defines the sequence**
+- Tools each demand their own config → **AGENTS.md is the single entry point**
+
+## Installation (Claude Code)
+
+These six files are agent skills with valid YAML frontmatter. To install:
+
+```bash
+# clone into your skills directory
+git clone <this-repo> ~/.claude/skills/agentic-engineering
+
+# or symlink individual skills
+ln -s "$(pwd)/project-kickoff-prd.md" ~/.claude/skills/project-kickoff-prd.md
+```
+
+Each skill self-describes its triggering conditions in the frontmatter, so Claude (or any agent that reads skill metadata) will surface the right one at the right moment. The same files double as an Obsidian vault — `[[ ]]` links are intact.
 
 ---
 
@@ -38,16 +53,20 @@ Design your high-level architecture upfront through conversation with your Agent
 ### Execution Order
 
 ```
-PRD (What & Why) → SPEC (Contract) → ADR (Decisions) → IMPL PLAN (Tasks) → STATUS (Memory)
-      ↑                   ↑                ↑                    ↑                  ↑
-  Co-creation       Machine-readable   Append-only        Single-session       Live sync
-  with Agent         zero-ambiguity    decision log       self-contained       every session
+[AGENTS.md (Entry)] → PRD (What & Why) → SPEC (Contract) → ADR (Decisions) → IMPL PLAN (Tasks) → STATUS (Memory)
+                            ↑                   ↑                ↑                    ↑                  ↑↺
+                        Co-creation       Machine-readable   Append-only        Single-session       Live sync
+                         with Agent        zero-ambiguity    decision log       self-contained       every session
+                                                                                                  (loops every session)
 ```
+
+ADRs can be triggered at any point along the chain — whenever a decision fork appears in PRD, SPEC, or IMPL PLAN work. STATUS loops every session forever.
 
 ### Document Summary
 
 | Doc | Principle | Core Constraint | Skill |
 |-----|-----------|-----------------|-------|
+| **AGENTS.md** | One door, one source of truth | All tool-specific files point here | [[agents-md-template]] |
 | **PRD** | Co-define, think beyond what I say | Agent is a co-creator, not a note-taker | [[project-kickoff-prd]] |
 | **SPEC** | Machine-readable, correct on first pass | Any Agent can implement with zero prior context | [[technical-specification]] |
 | **ADR** | Append-only, future selves | Never rewrite history — write for the reader 6 months from now | [[architecture-decision-record]] |
