@@ -18,19 +18,35 @@ A documentation chain that gives Agents full project context from day one, stays
 - Agent does tasks in wrong order or scope → **IMPL PLAN defines the sequence**
 - Tools each demand their own config → **AGENTS.md is the single entry point**
 
-## Installation (Claude Code)
+## Layout
 
-These six files are agent skills with valid YAML frontmatter. To install:
+This repo is a Claude Code skills collection. Each skill lives in its own directory containing a `SKILL.md`:
 
-```bash
-# clone into your skills directory
-git clone <this-repo> ~/.claude/skills/agentic-engineering
-
-# or symlink individual skills
-ln -s "$(pwd)/project-kickoff-prd.md" ~/.claude/skills/project-kickoff-prd.md
+```
+agentic-engineering/
+├── README.md
+├── agents-md-template/SKILL.md
+├── architecture-decision-record/SKILL.md
+├── implementation-plan/SKILL.md
+├── project-kickoff-prd/SKILL.md
+├── status-tracker/SKILL.md
+└── technical-specification/SKILL.md
 ```
 
-Each skill self-describes its triggering conditions in the frontmatter, so Claude (or any agent that reads skill metadata) will surface the right one at the right moment. The same files double as an Obsidian vault — `[[ ]]` links are intact.
+## Installation (Claude Code)
+
+Clone the repo anywhere, then symlink each skill directory into your personal skills directory (`~/.claude/skills/`):
+
+```bash
+git clone <this-repo> ~/src/agentic-engineering
+
+for skill in agents-md-template architecture-decision-record implementation-plan \
+             project-kickoff-prd status-tracker technical-specification; do
+  ln -s "$HOME/src/agentic-engineering/$skill" "$HOME/.claude/skills/$skill"
+done
+```
+
+Each skill self-describes its triggering conditions in the frontmatter `description`, so Claude (or any agent that reads skill metadata) will surface the right one at the right moment.
 
 ---
 
@@ -66,16 +82,16 @@ ADRs can be triggered at any point along the chain — whenever a decision fork 
 
 | Doc | Principle | Core Constraint | Skill |
 |-----|-----------|-----------------|-------|
-| **AGENTS.md** | One door, one source of truth | All tool-specific files point here | [[agents-md-template]] |
-| **PRD** | Co-define, think beyond what I say | Agent is a co-creator, not a note-taker | [[project-kickoff-prd]] |
-| **SPEC** | Machine-readable, correct on first pass | Any Agent can implement with zero prior context | [[technical-specification]] |
-| **ADR** | Append-only, future selves | Never rewrite history — write for the reader 6 months from now | [[architecture-decision-record]] |
-| **IMPL PLAN** | Single session, zero additional context | Every task is independently executable | [[implementation-plan]] |
-| **STATUS** | Session handoff, living memory | Single source of truth for "where we are" | [[status-tracker]] |
+| **AGENTS.md** | One door, one source of truth | All tool-specific files point here | [agents-md-template](agents-md-template/SKILL.md) |
+| **PRD** | Co-define, think beyond what I say | Agent is a co-creator, not a note-taker | [project-kickoff-prd](project-kickoff-prd/SKILL.md) |
+| **SPEC** | Machine-readable, correct on first pass | Any Agent can implement with zero prior context | [technical-specification](technical-specification/SKILL.md) |
+| **ADR** | Append-only, future selves | Never rewrite history — write for the reader 6 months from now | [architecture-decision-record](architecture-decision-record/SKILL.md) |
+| **IMPL PLAN** | Single session, zero additional context | Every task is independently executable | [implementation-plan](implementation-plan/SKILL.md) |
+| **STATUS** | Session handoff, living memory | Single source of truth for "where we are" | [status-tracker](status-tracker/SKILL.md) |
 
 ### AGENTS.md — The Entry Point
 
-> See [[agents-md-template]] for the full template.
+> See [agents-md-template](agents-md-template/SKILL.md) for the full template.
 
 `AGENTS.md` is the single entry point for any Agent starting a session. It points to all documents in the chain and defines coding conventions, architecture constraints, and boundaries.
 
