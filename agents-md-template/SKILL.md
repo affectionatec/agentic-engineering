@@ -16,7 +16,7 @@ description: Use when bootstrapping a new repo for AI-assisted development, when
 | **Output** | `AGENTS.md` at repo root + one-line pointer files for each tool |
 | **Sequence** | Step 0 — before any documentation chain work begins |
 | **Iron rule** | One source of truth. CLAUDE.md / .cursor / copilot all point here. |
-| **Sibling skills** | [[project-kickoff-prd]] · [[technical-specification]] · [[architecture-decision-record]] · [[implementation-plan]] · [[status-tracker]] |
+| **Sibling skills** | [[project-kickoff-prd]] · [[technical-specification]] · [[architecture-decision-record]] · [[implementation-plan]] · [[status-tracker]] · [[independent-verification]] |
 
 ---
 
@@ -38,7 +38,7 @@ description: Use when bootstrapping a new repo for AI-assisted development, when
 
 ## 2. Documentation Chain — Read Before You Code
 
-This project uses a four-document chain. **Read them in order.**
+This project uses a six-document chain. **Read them in order.**
 
 | Doc | Path | Purpose | When to Read |
 |-----|------|---------|-------------|
@@ -47,13 +47,15 @@ This project uses a four-document chain. **Read them in order.**
 | **ADR** | `docs/adr/ADR-*.md` | Why we chose A over B — append-only, never rewrite | Before making architectural decisions |
 | **IMPL PLAN** | `docs/plans/implementation-plan.md` | Milestones and step-by-step tasks | Before starting a task |
 | **STATUS** | `docs/status.md` | Where we are right now — live progress | **First thing every session** |
+| **VERIFICATION LOG** | `docs/verification-log.md` | Verdicts with evidence for every completed task — append-only | Before marking anything done; when auditing what "done" meant |
 
 ### Session Protocol
 
-1. **Start of session:** Read `docs/status.md`. Find the latest handoff log entry. That's your briefing.
+1. **Start of session:** Read `docs/status.md`. If the In-Flight Checkpoint is not `none`, the previous session crashed — recover from it. Otherwise the latest handoff log entry is your briefing.
 2. **Before coding:** Read the SPEC for the module you're working on. Follow the contract exactly.
 3. **Decision point:** Check `docs/adr/` before making any architectural choice. If no ADR covers it, flag it to the user.
-4. **End of session:** Update `docs/status.md` — module table, header block, and append a handoff log entry.
+4. **After each completed task:** Checkpoint `docs/status.md` (In-Flight Checkpoint + module table). Then request independent verification — the task stays at 🔍 until a verifier with fresh context returns PASS. Never mark your own work ✅.
+5. **End of session:** Update `docs/status.md` — module table, header block, append a handoff log entry, reset the In-Flight Checkpoint to `none`.
 
 ---
 
@@ -86,18 +88,35 @@ This project uses a four-document chain. **Read them in order.**
 - **Do not modify ADRs.** They are append-only. Supersede with a new ADR if needed.
 - **Do not skip the status update.** Every session ends with a handoff log entry.
 - **Do not guess when the spec is ambiguous.** Ask the user.
+- **Do not grade your own work.** Marking a task ✅ requires an independent verifier's PASS, not your claim.
+- **Do not delete, skip, or weaken tests to make a run pass.** The suite count only goes up (test ratchet). A failing test is information, not an obstacle.
+- **Do not redefine "done" mid-task.** Acceptance criteria are locked when the task starts; changes require the user's explicit approval.
 
 ---
 
-## 6. How to Verify Your Work
+## 6. Verification — Self-Check, Then Independent Gate
 
-Before marking any task as done:
+### 6.1 Producer self-check (necessary, never sufficient)
+
+Before claiming a task is built:
 
 1. **Lint clean:** `[lint command]` exits 0
 2. **Tests pass:** `[test command]` — report exact count (e.g., "142/142 pytest")
 3. **No regressions:** all pre-existing tests still pass
-4. **Spec compliance:** every acceptance criterion in the relevant spec is met
-5. **Status updated:** `docs/status.md` reflects what you just did
+4. **Test ratchet holds:** suite count ≥ previous baseline — no tests deleted or skipped
+5. **Spec compliance:** every acceptance criterion in the relevant spec is met
+6. **Status updated:** `docs/status.md` reflects what you just did
+
+### 6.2 Independent verification (the gate)
+
+- A verifier with **fresh context** — sub-agent or fresh session, never this conversation — re-runs the task's done condition exactly as written in the SPEC / IMPL PLAN and appends a verdict with evidence to `docs/verification-log.md`.
+- Only a PASS verdict moves the task from 🔍 to ✅ in STATUS.
+- Three consecutive FAILs on the same task → stop and escalate to the user. Do not loop indefinitely; do not weaken criteria to converge.
+
+### 6.3 Human gate (before merge)
+
+- A human reads the diff and can explain the change in their own words before it merges. Code you can't explain is comprehension debt — and it compounds.
+- The verification log entry is the review digest: what changed, what was proven, what the risks are.
 
 ---
 
@@ -121,7 +140,7 @@ Agent Start
 │  §3 Coding Conventions (how to write code)              │
 │  §4 Architecture Constraints (what's already decided)   │
 │  §5 Boundaries (what NOT to do)                         │
-│  §6 Verification (how to prove it's done)               │
+│  §6 Verification (self-check → independent gate)        │
 └────────────────────────┬────────────────────────────────┘
                          ▼
 ┌─────────────────────────────────────────────────────────┐
@@ -134,7 +153,16 @@ Agent Start
 │  "Follow the contract. Ambiguity = ask, don't guess."   │
 └────────────────────────┬────────────────────────────────┘
                          ▼
-                    Start coding.
+                  Build the task.
+                         │
+                         ▼
+┌─────────────────────────────────────────────────────────┐
+│  Independent verification  ← fresh context, not you     │
+│  Verifier re-runs the done condition, appends verdict   │
+│  to docs/verification-log.md. Only PASS marks ✅.       │
+└────────────────────────┬────────────────────────────────┘
+                         ▼
+        Checkpoint docs/status.md. Next task or hand off.
 ```
 ````
 
