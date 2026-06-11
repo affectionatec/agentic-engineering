@@ -16,7 +16,7 @@ description: Use when the PRD is finalized and precise implementation contracts 
 | **Output** | `docs/spec/[domain-name].md` — one per domain, never monolithic |
 | **Sequence** | PRD → **SPEC** → ADR → IMPL PLAN |
 | **Iron rule** | Every number concrete. Every boundary has a violation response. No "etc." |
-| **Sibling skills** | [[project-kickoff-prd]] · [[architecture-decision-record]] · [[implementation-plan]] · [[status-tracker]] · [[independent-verification]] |
+| **Sibling skills** | [[project-kickoff-prd]] · [[architecture-decision-record]] · [[implementation-plan]] · [[status-tracker]] · [[independent-verification]] · [[git-workflow]] |
 
 ## System Prompt
 

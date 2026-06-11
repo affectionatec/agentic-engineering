@@ -16,7 +16,7 @@ description: Use when bootstrapping a new repo for AI-assisted development, when
 | **Output** | `AGENTS.md` at repo root + one-line pointer files for each tool |
 | **Sequence** | Step 0 — before any documentation chain work begins |
 | **Iron rule** | One source of truth. CLAUDE.md / .cursor / copilot all point here. |
-| **Sibling skills** | [[project-kickoff-prd]] · [[technical-specification]] · [[architecture-decision-record]] · [[implementation-plan]] · [[status-tracker]] · [[independent-verification]] |
+| **Sibling skills** | [[project-kickoff-prd]] · [[technical-specification]] · [[architecture-decision-record]] · [[implementation-plan]] · [[status-tracker]] · [[independent-verification]] · [[git-workflow]] |
 
 ---
 
@@ -54,7 +54,7 @@ This project uses a six-document chain. **Read them in order.**
 1. **Start of session:** Read `docs/status.md`. If the In-Flight Checkpoint is not `none`, the previous session crashed — recover from it. Otherwise the latest handoff log entry is your briefing.
 2. **Before coding:** Read the SPEC for the module you're working on. Follow the contract exactly.
 3. **Decision point:** Check `docs/adr/` before making any architectural choice. If no ADR covers it, flag it to the user.
-4. **After each completed task:** Checkpoint `docs/status.md` (In-Flight Checkpoint + module table). Then request independent verification — the task stays at 🔍 until a verifier with fresh context returns PASS. Never mark your own work ✅.
+4. **After each completed task:** Checkpoint `docs/status.md` (In-Flight Checkpoint + module table). Push the task branch and open a draft PR, then request independent verification — the task stays at 🔍 until a verifier with fresh context returns PASS. Never mark your own work ✅; never merge your own PR.
 5. **End of session:** Update `docs/status.md` — module table, header block, append a handoff log entry, reset the In-Flight Checkpoint to `none`.
 
 ---
@@ -91,6 +91,8 @@ This project uses a six-document chain. **Read them in order.**
 - **Do not grade your own work.** Marking a task ✅ requires an independent verifier's PASS, not your claim.
 - **Do not delete, skip, or weaken tests to make a run pass.** The suite count only goes up (test ratchet). A failing test is information, not an obstacle.
 - **Do not redefine "done" mid-task.** Acceptance criteria are locked when the task starts; changes require the user's explicit approval.
+- **Do not commit directly to main.** Every task gets its own branch and ships as a draft PR (one task = one PR).
+- **Do not merge your own PR.** Merge requires the verifier's PASS and a human who has read the diff.
 
 ---
 

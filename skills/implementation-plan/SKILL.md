@@ -16,7 +16,7 @@ description: Use when specs are approved and work needs to be broken into indepe
 | **Output** | `docs/plans/implementation-plan.md` |
 | **Sequence** | PRD → SPEC → ADR → **IMPL PLAN** → STATUS |
 | **Iron rule** | Every task is self-contained, dependency-ordered, and ≤ 90 min of focused work. |
-| **Sibling skills** | [[project-kickoff-prd]] · [[technical-specification]] · [[architecture-decision-record]] · [[status-tracker]] · [[independent-verification]] |
+| **Sibling skills** | [[project-kickoff-prd]] · [[technical-specification]] · [[architecture-decision-record]] · [[status-tracker]] · [[independent-verification]] · [[git-workflow]] |
 
 ## System Prompt
 
@@ -170,7 +170,7 @@ Estimated minimum: [N] sessions
 - M2-T1 and M2-T3 can run in parallel (no shared dependencies)
 - M3-T1 through M3-T3 are independent vertical slices
 
-> Parallel agents must be isolated: one git worktree (or branch) per agent, merging through the verification gate. Worktrees solve mechanical conflicts only — human review bandwidth sets the real ceiling on how many agents run at once.
+> Parallel agents must be isolated: one git worktree per agent, one branch and one PR per task, merging through the verification gate — full protocol in [[git-workflow]]. Worktrees solve mechanical conflicts only — human review bandwidth sets the real ceiling on how many agents run at once.
 
 ## Rollback Points
 
@@ -220,4 +220,5 @@ Once the plan is approved and work begins:
 - Create **STATUS.md** immediately (→ [[status-tracker]])
 - The first session picks up M1-T1 and updates STATUS at session end
 - Every new Agent session reads STATUS first, finds the next unblocked task, and executes it
+- Every task's code lands on its own branch and ships as a draft PR (→ [[git-workflow]])
 - Every completed task passes through the verification gate before STATUS marks it ✅ (→ [[independent-verification]])

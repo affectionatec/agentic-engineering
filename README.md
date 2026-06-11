@@ -1,6 +1,6 @@
 # Agentic Engineering — Documentation-First Development
 
-> Seven skills that give coding agents persistent memory, zero-ambiguity contracts, and an independent definition of "done" — the harness layer for long-running, loop-driven development.
+> Eight skills that give coding agents persistent memory, zero-ambiguity contracts, a git contract for how code lands, and an independent definition of "done" — the harness layer for long-running, loop-driven development.
 
 ## The Core Problem
 
@@ -16,14 +16,15 @@
 - Agent builds the wrong thing → **PRD defines what and why**
 - Agent does tasks in wrong order or scope → **IMPL PLAN defines the sequence**
 - Agent claims "done" when it isn't → **VERIFICATION makes done a verdict, not a claim**
+- Code lands as untraceable commits on main → **GIT WORKFLOW ships each task as an evidence-carrying PR**
 - Crash mid-session loses all progress → **STATUS checkpoints at task granularity**
 - Tools each demand their own config → **AGENTS.md is the single entry point**
 
 ## How the Skills Flow
 
-<img width="2816" height="1536" alt="Gemini_Generated_Image_6rddrw6rddrw6rdd" src="https://github.com/user-attachments/assets/859e2f6a-d1e1-4dab-bee0-985f7b05956d" />
+![How the skills flow — from AGENTS.md through the planning chain, the verify-gated execution loop, and the human merge gate](assets/skills-flow.svg)
 
-ADRs can be triggered at any point along the chain — whenever a decision fork appears in PRD, SPEC, or IMPL PLAN work. VERIFY loops every task: build → independent verdict → only PASS marks ✅. STATUS loops every session forever.
+ADRs can be triggered at any point along the chain — whenever a decision fork appears in PRD, SPEC, or IMPL PLAN work. VERIFY loops every task: build → independent verdict → only PASS marks ✅. STATUS loops every session forever. Code travels per GIT WORKFLOW: a branch per task, a draft PR carrying the done condition, ready only on PASS, merged only by a human.
 
 ## The Skills
 
@@ -137,6 +138,23 @@ Each skill is a directory containing a `SKILL.md` (the shared format used by Cla
 
 </details>
 
+<details>
+<summary><b>8. <a href="skills/git-workflow/SKILL.md">git-workflow</a> — The Road</b> · branch per task, evidence-carrying draft PRs, merge only through both gates</summary>
+
+*Defines how code actually lands: one branch and one PR per task, verification evidence in the PR, merge gated by verdict and human.* Produces task branches + draft PRs.
+
+| Mechanism | What it does |
+|-----------|--------------|
+| **Protected main** | main is read-only for agents — no exceptions, including "trivial" fixes |
+| **One task, one branch, one PR** | `task/<task-id>-<slug>` named from plan task IDs; traceability runs diff → PR → task → spec |
+| **Evidence-carrying PRs** | The PR description holds the done condition and the verdict reference — review starts from the contract, not the raw diff |
+| **Draft until PASS** | PRs are born draft; ready-for-review is earned by the verifier's PASS, never by the producer's confidence |
+| **Double-gated merge** | Verifier PASS + a human who read the diff; the agent never merges its own PR — in unattended loops, merge is always the human's move |
+| **Evidence integrity** | No history rewriting once verification starts; branches deleted only after merge |
+| **Worktree isolation** | Parallel agents get one worktree each — mechanical conflicts solved, human review bandwidth still the ceiling |
+
+</details>
+
 ## Quick Start
 
 **Claude Code — plugin marketplace (recommended):**
@@ -149,7 +167,9 @@ Each skill is a directory containing a `SKILL.md` (the shared format used by Cla
 Then, in any project:
 
 - **`/using-agentic-engineering`** — the entry point: assesses which chain documents exist, reports where the project stands, and routes you to the right skill
-- The seven skills **auto-trigger** from their frontmatter descriptions ("write the spec", "where are we", "verify this task") — or invoke one **explicitly**: `/agentic-engineering:independent-verification`, or just say *"use the project-kickoff-prd skill: I want to build …"*
+- **`/run-loop M2`** — the chain-aware loop driver: branch → build → draft PR → dispatch the verifier → checkpoint → next task. Stops on the circuit breaker (3 FAILs) or the task budget, and **never merges**
+- A ready-made **`verifier` sub-agent** ships with the plugin (`@agent-agentic-engineering:verifier`) — fresh context by construction, writes nothing but the verification log
+- The eight skills **auto-trigger** from their frontmatter descriptions ("write the spec", "where are we", "verify this task") — or invoke one **explicitly**: `/agentic-engineering:independent-verification`, or just say *"use the project-kickoff-prd skill: I want to build …"*
 
 <details>
 <summary><b>Manual install</b> — personal symlinks · single project · Codex · Cursor / Copilot / any agent</summary>
@@ -191,11 +211,12 @@ cp -r agentic-engineering/skills/*/ your-project/.claude/skills/
 | 3 | "Should we use X or Y?" *(any decision fork, any time)* | [architecture-decision-record](skills/architecture-decision-record/SKILL.md) | `docs/adr/ADR-NNN-*.md` |
 | 4 | "Break this into tasks" | [implementation-plan](skills/implementation-plan/SKILL.md) | `docs/plans/implementation-plan.md` |
 | 5 | "Pick up the next task" *(every session)* | [status-tracker](skills/status-tracker/SKILL.md) | Briefing from `docs/status.md`, work resumes where it left off |
-| 6 | "Verify M1-T1" *(fresh session or sub-agent)* | [independent-verification](skills/independent-verification/SKILL.md) | PASS/FAIL verdict with evidence in `docs/verification-log.md` |
+| 6 | "Verify M1-T1" *(dispatches the bundled verifier)* | [independent-verification](skills/independent-verification/SKILL.md) | PASS/FAIL verdict with evidence in `docs/verification-log.md` |
+| 7 | "/run-loop M1" *(unattended)* | [git-workflow](skills/git-workflow/SKILL.md) + [verifier agent](agents/verifier.md) | A queue of verified draft→ready PRs — merging stays yours |
 
 ## Where This Sits — The Harness Layer
 
-[Loop engineering](https://addyosmani.com/blog/loop-engineering/) sits one floor above the harness: automations find the work, worktrees isolate it, sub-agents check it, and the loop feeds itself. This suite is deliberately the floor below — the **memory, contract, and verification substrate** that any loop consumes. It is product-agnostic: the same documentation chain serves Claude Code (`/loop`, scheduled tasks), Codex (Automations, `/goal`), a Ralph-loop bash script, or a human driving sessions by hand.
+[Loop engineering](https://addyosmani.com/blog/loop-engineering/) sits one floor above the harness: automations find the work, worktrees isolate it, sub-agents check it, and the loop feeds itself. This suite is deliberately the floor below — the **memory, contract, and verification substrate** that any loop consumes. It is product-agnostic: the same documentation chain serves Claude Code (`/loop`, scheduled tasks), Codex (Automations, `/goal`), a Ralph-loop bash script, or a human driving sessions by hand. It also ships the smallest possible loop of its own — `/run-loop` drives the chain task-by-task while leaving every merge to a human.
 
 How the chain maps to the convergent primitives of [long-running agents](https://addyosmani.com/blog/long-running-agents/):
 
@@ -207,6 +228,9 @@ How the chain maps to the convergent primitives of [long-running agents](https:/
 | Checkpoint cadence — every N work units, not only at the end | STATUS checkpoint protocol (task granularity) |
 | Project knowledge that survives sessions | AGENTS.md single source of truth |
 | Decision history that can't be silently rewritten | ADR (append-only, supersede-only) |
+| Worktrees — parallel agent isolation | [git-workflow](skills/git-workflow/SKILL.md): one branch + PR per task, one worktree per agent |
+| Sub-agents — producer vs. checker | the bundled [`verifier` agent](agents/verifier.md): fresh context by construction |
+| Automations — run until done | [`/run-loop`](commands/run-loop.md): chain-aware driver with circuit breaker; merging stays human |
 
 ### Loop Safety — Non-Negotiables When a Loop Drives This Chain
 
@@ -235,7 +259,7 @@ This suite stands on published patterns and prior art:
 
 ---
 
-**One-line summary:** `AGENTS.md` is the door, `STATUS.md` is memory, `SPEC` is the contract, `ADR` is the law, `VERIFY` is the gate. Agent enters → reads memory → works by contract → doesn't break the law → and never grades its own homework.
+**One-line summary:** `AGENTS.md` is the door, `STATUS.md` is memory, `SPEC` is the contract, `ADR` is the law, `VERIFY` is the gate, and `GIT WORKFLOW` is the road through it. Agent enters → reads memory → works by contract → doesn't break the law → ships every task down the road → and never grades its own homework.
 
 > *Build the harness. Externalize the state. Separate verification. Then — go read what your agent wrote.* — [Addy Osmani](https://addyosmani.com/blog/long-running-agents/)
 

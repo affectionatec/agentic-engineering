@@ -16,7 +16,7 @@ description: Use when a technical choice has multiple valid options and the deci
 | **Output** | `docs/adr/ADR-NNN-[slug].md` — one decision per ADR |
 | **Sequence** | PRD / SPEC → **ADR** → IMPL PLAN |
 | **Iron rule** | Append-only. Never rewrite. Supersede instead. |
-| **Sibling skills** | [[project-kickoff-prd]] · [[technical-specification]] · [[implementation-plan]] · [[status-tracker]] · [[independent-verification]] |
+| **Sibling skills** | [[project-kickoff-prd]] · [[technical-specification]] · [[implementation-plan]] · [[status-tracker]] · [[independent-verification]] · [[git-workflow]] |
 
 ## System Prompt
 
