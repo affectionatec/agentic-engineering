@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace-manifest.json",
+  "name": "agentic-engineering",
+  "description": "Documentation-first development for AI coding agents — persistent memory, zero-ambiguity contracts, and an independent definition of done.",
+  "owner": {
+    "name": "affectionatec",
+    "url": "https://github.com/affectionatec"
+  },
+  "plugins": [
+    {
+      "name": "agentic-engineering",
+      "displayName": "Agentic Engineering",
+      "source": "./",
+      "description": "Seven skills forming a documentation chain: AGENTS.md entry point, PRD, technical specs, ADRs, implementation plans, status tracking with crash recovery, and an independent verification gate. The harness layer for long-running, loop-driven development.",
+      "license": "MIT",
+      "keywords": [
+        "skills",
+        "agentic-coding",
+        "documentation-first",
+        "verification",
+        "adr",
+        "prd",
+        "long-running-agents"
+      ],
+      "category": "workflows"
+    }
+  ]
+}

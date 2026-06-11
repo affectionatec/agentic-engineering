@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "agentic-engineering",
+  "displayName": "Agentic Engineering",
+  "description": "Documentation-first development for AI coding agents — seven skills: persistent memory, zero-ambiguity specs, append-only decisions, and an independent verification gate.",
+  "author": {
+    "name": "affectionatec",
+    "url": "https://github.com/affectionatec"
+  },
+  "homepage": "https://github.com/affectionatec/agentic-engineering",
+  "repository": "https://github.com/affectionatec/agentic-engineering",
+  "license": "MIT",
+  "keywords": [
+    "skills",
+    "agentic-coding",
+    "documentation-first",
+    "verification",
+    "adr",
+    "prd",
+    "long-running-agents"
+  ]
+}
