@@ -16,7 +16,7 @@ description: Use when a task or milestone claims completion and must be verified
 | **Output** | Verdict entry appended to `docs/verification-log.md` (PASS / FAIL per criterion, with evidence) |
 | **Sequence** | IMPL PLAN task built → **VERIFY** → STATUS records ✅ (loops every task) |
 | **Iron rule** | Fresh context. The verifier never sees the producer's conversation, and never edits code. |
-| **Sibling skills** | [[project-kickoff-prd]] · [[technical-specification]] · [[architecture-decision-record]] · [[implementation-plan]] · [[status-tracker]] |
+| **Sibling skills** | [[project-kickoff-prd]] · [[technical-specification]] · [[architecture-decision-record]] · [[implementation-plan]] · [[status-tracker]] · [[git-workflow]] |
 
 ## Why This Exists
 
@@ -37,6 +37,8 @@ The fix is structural, not behavioral. You cannot prompt a producer into objecti
 | **Verifier** | Reads the done condition first, re-runs every verification command, inspects the diff, writes the verdict | Fix code · inherit the producer's conversation · negotiate or reinterpret criteria |
 
 **Fresh context is the whole point.** Run the verifier as a sub-agent with no shared conversation, a fresh session, or a separate agent entirely. A verifier that saw the producer's reasoning inherits the producer's blind spots — that is verification theater, not verification.
+
+> **If this suite is installed as the Claude Code plugin**, a ready-made verifier ships with it: dispatch the bundled `verifier` sub-agent (explicitly via `@agent-agentic-engineering:verifier`, or let delegation pick it up). Sub-agents start with fresh context by construction — the isolation this skill requires is structural, not a discipline to remember.
 
 ## Verifier Protocol
 
@@ -139,5 +141,6 @@ Independent verification doubles model invocations per task. Spend it where it p
 - **IMPL PLAN** defines each task's done condition — the verifier executes it as written ([[implementation-plan]])
 - **SPEC** holds acceptance criteria with verification commands per criterion ([[technical-specification]])
 - **STATUS** records ✅ only with a verdict reference; the 🔍 state marks "built, awaiting verification" ([[status-tracker]])
+- **GIT WORKFLOW** puts the work on a branch and a draft PR before verification; a PASS verdict is what flips the PR from draft to ready ([[git-workflow]])
 - **AGENTS.md** defines the canonical commands the verifier runs ([[agents-md-template]])
 - **ADR** captures any criteria change that survives escalation ([[architecture-decision-record]])

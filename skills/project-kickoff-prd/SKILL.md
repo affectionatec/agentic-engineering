@@ -16,7 +16,7 @@ description: Use when starting a new project or feature from scratch, when a rou
 | **Output** | `docs/prd.md` |
 | **Sequence** | **PRD** → SPEC → ADR → IMPL PLAN → STATUS |
 | **Iron rule** | Never skip straight to the document. Value is in the dialogue. |
-| **Sibling skills** | [[technical-specification]] · [[architecture-decision-record]] · [[implementation-plan]] · [[status-tracker]] · [[independent-verification]] |
+| **Sibling skills** | [[technical-specification]] · [[architecture-decision-record]] · [[implementation-plan]] · [[status-tracker]] · [[independent-verification]] · [[git-workflow]] |
 
 ## System Prompt
 

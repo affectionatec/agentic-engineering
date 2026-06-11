@@ -16,7 +16,7 @@ description: Use at the start of every coding session (read STATUS.md before any
 | **Output** | `docs/status.md` — live, with append-only handoff log |
 | **Sequence** | Created when IMPL PLAN starts; updated every session forever |
 | **Iron rule** | Handoff log is append-only, newest first. Never edit past entries. |
-| **Sibling skills** | [[project-kickoff-prd]] · [[technical-specification]] · [[architecture-decision-record]] · [[implementation-plan]] · [[independent-verification]] |
+| **Sibling skills** | [[project-kickoff-prd]] · [[technical-specification]] · [[architecture-decision-record]] · [[implementation-plan]] · [[independent-verification]] · [[git-workflow]] |
 
 ## System Prompt
 
@@ -104,7 +104,7 @@ Newest first.
 
 #### Header Block (Current Phase / Next Up / Code Status)
 
-- **Current phase** — The active milestone, its short description, and a status indicator (⬜ / 🟡 / ✅). If a PR is open, say so.
+- **Current phase** — The active milestone, its short description, and a status indicator (⬜ / 🟡 / 🔍 / ✅). If a PR is open, say so — one task, one branch, one PR (→ [[git-workflow]]).
 - **Next up** — The next milestone and its precondition (e.g., "once M3 merges, start M4").
 - **Code status** — Cumulative merged state + current working state. Always include: merged milestone range, test count (exact number), lint status (clean or not), and any caveats (e.g., "⚠️ live API needs keys").
 

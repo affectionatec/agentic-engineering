@@ -41,8 +41,10 @@ Recommend exactly one next move, based on the first gap in the chain:
 | A decision fork is on the table ("X or Y?") | **architecture-decision-record** — capture it before it evaporates |
 | Specs approved, no implementation plan | **implementation-plan** — dependency-ordered atomic tasks |
 | Plan exists and a session is starting | **status-tracker** — read the briefing, pick the next unblocked task |
-| A task claims completion / anything sits at 🔍 | **independent-verification** — fresh-context verdict before any ✅ |
+| Code work is starting, or a built task needs to ship | **git-workflow** — branch per task, draft PR carrying the done condition |
+| A task claims completion / anything sits at 🔍 | **independent-verification** — dispatch the bundled `verifier` sub-agent for a fresh-context verdict |
 | In-Flight Checkpoint is not `none` | **status-tracker** — crash recovery from the checkpoint |
+| The user wants multiple tasks run unattended | point them to **`/run-loop`** — the chain-aware loop driver (verify-gated, never merges) |
 
 If the user passed arguments (`$ARGUMENTS`), weigh them first — they may name the step they want; route there unless a blocking gap earlier in the chain makes it premature (say so explicitly if it does).
 
