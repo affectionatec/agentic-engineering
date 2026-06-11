@@ -277,3 +277,7 @@ This suite stands on published patterns and prior art:
 **One-line summary:** `AGENTS.md` is the door, `STATUS.md` is memory, `SPEC` is the contract, `ADR` is the law, `VERIFY` is the gate. Agent enters → reads memory → works by contract → doesn't break the law → and never grades its own homework.
 
 > *Build the harness. Externalize the state. Separate verification. Then — go read what your agent wrote.* — [Addy Osmani](https://addyosmani.com/blog/long-running-agents/)
+
+## License
+
+[MIT](LICENSE) — use it, fork it, adapt it to your own harness.
