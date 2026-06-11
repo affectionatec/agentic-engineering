@@ -68,7 +68,7 @@ ADRs can be triggered at any point along the chain — whenever a decision fork 
 Each skill is a directory containing a `SKILL.md` (the shared format used by Claude Code and Codex). Click any skill for its core mechanisms.
 
 <details>
-<summary><b>1. <a href="agents-md-template/SKILL.md">agents-md-template</a> — The Door</b> · bootstraps <code>AGENTS.md</code> as the single source of truth every tool points to</summary>
+<summary><b>1. <a href="skills/agents-md-template/SKILL.md">agents-md-template</a> — The Door</b> · bootstraps <code>AGENTS.md</code> as the single source of truth every tool points to</summary>
 
 *Bootstraps a repo with `AGENTS.md` as the single source of truth every agent reads before doing anything.* Produces `AGENTS.md` + pointer files.
 
@@ -83,7 +83,7 @@ Each skill is a directory containing a `SKILL.md` (the shared format used by Cla
 </details>
 
 <details>
-<summary><b>2. <a href="project-kickoff-prd/SKILL.md">project-kickoff-prd</a> — The Why</b> · phased dialogue that turns a rough idea into a prioritized PRD</summary>
+<summary><b>2. <a href="skills/project-kickoff-prd/SKILL.md">project-kickoff-prd</a> — The Why</b> · phased dialogue that turns a rough idea into a prioritized PRD</summary>
 
 *Turns a rough idea into a structured PRD through phased dialogue — the agent is a co-creator, not a note-taker.* Produces `docs/prd.md`.
 
@@ -98,7 +98,7 @@ Each skill is a directory containing a `SKILL.md` (the shared format used by Cla
 </details>
 
 <details>
-<summary><b>3. <a href="technical-specification/SKILL.md">technical-specification</a> — The Contract</b> · zero-ambiguity specs with machine-verifiable acceptance criteria</summary>
+<summary><b>3. <a href="skills/technical-specification/SKILL.md">technical-specification</a> — The Contract</b> · zero-ambiguity specs with machine-verifiable acceptance criteria</summary>
 
 *Hardens the PRD into implementation contracts any agent can build from with zero prior context and zero follow-up questions.* Produces `docs/spec/[domain].md`, one per bounded context.
 
@@ -113,7 +113,7 @@ Each skill is a directory containing a `SKILL.md` (the shared format used by Cla
 </details>
 
 <details>
-<summary><b>4. <a href="architecture-decision-record/SKILL.md">architecture-decision-record</a> — The Law</b> · append-only decision history with trade-offs and review triggers</summary>
+<summary><b>4. <a href="skills/architecture-decision-record/SKILL.md">architecture-decision-record</a> — The Law</b> · append-only decision history with trade-offs and review triggers</summary>
 
 *Captures every decision fork with context, options, and trade-offs — append-only, written for the reader six months from now.* Produces `docs/adr/ADR-NNN-[slug].md`.
 
@@ -128,7 +128,7 @@ Each skill is a directory containing a `SKILL.md` (the shared format used by Cla
 </details>
 
 <details>
-<summary><b>5. <a href="implementation-plan/SKILL.md">implementation-plan</a> — The Sequence</b> · dependency-ordered atomic tasks with locked done conditions</summary>
+<summary><b>5. <a href="skills/implementation-plan/SKILL.md">implementation-plan</a> — The Sequence</b> · dependency-ordered atomic tasks with locked done conditions</summary>
 
 *Decomposes approved specs into dependency-ordered atomic tasks any agent can execute in a single session.* Produces `docs/plans/implementation-plan.md`.
 
@@ -144,7 +144,7 @@ Each skill is a directory containing a `SKILL.md` (the shared format used by Cla
 </details>
 
 <details>
-<summary><b>6. <a href="independent-verification/SKILL.md">independent-verification</a> — The Gate</b> · fresh-context verifier turns "done" into an evidence-backed verdict</summary>
+<summary><b>6. <a href="skills/independent-verification/SKILL.md">independent-verification</a> — The Gate</b> · fresh-context verifier turns "done" into an evidence-backed verdict</summary>
 
 *The maker-checker gate: a verifier with fresh context executes the done condition as written and returns a verdict with evidence.* Produces `docs/verification-log.md`.
 
@@ -161,7 +161,7 @@ Each skill is a directory containing a `SKILL.md` (the shared format used by Cla
 </details>
 
 <details>
-<summary><b>7. <a href="status-tracker/SKILL.md">status-tracker</a> — The Memory</b> · live progress, in-run checkpoints, crash recovery, session handoffs</summary>
+<summary><b>7. <a href="skills/status-tracker/SKILL.md">status-tracker</a> — The Memory</b> · live progress, in-run checkpoints, crash recovery, session handoffs</summary>
 
 *The bridge between sessions: live progress, in-run checkpoints, and an append-only handoff log.* Produces `docs/status.md`.
 
@@ -177,7 +177,22 @@ Each skill is a directory containing a `SKILL.md` (the shared format used by Cla
 
 ## Quick Start
 
-**Claude Code — personal, available in every project:**
+**Claude Code — plugin marketplace (recommended):**
+
+```
+/plugin marketplace add affectionatec/agentic-engineering
+/plugin install agentic-engineering@agentic-engineering
+```
+
+Then, in any project:
+
+- **`/using-agentic-engineering`** — the entry point: assesses which chain documents exist, reports where the project stands, and routes you to the right skill
+- The seven skills **auto-trigger** from their frontmatter descriptions ("write the spec", "where are we", "verify this task") — or invoke one **explicitly**: `/agentic-engineering:independent-verification`, or just say *"use the project-kickoff-prd skill: I want to build …"*
+
+<details>
+<summary><b>Manual install</b> — personal symlinks · single project · Codex · Cursor / Copilot / any agent</summary>
+
+**Claude Code — personal, all projects (no plugin system needed):**
 
 ```bash
 git clone https://github.com/affectionatec/agentic-engineering.git ~/src/agentic-engineering
@@ -186,43 +201,35 @@ mkdir -p ~/.claude/skills
 for skill in agents-md-template architecture-decision-record implementation-plan \
              independent-verification project-kickoff-prd status-tracker \
              technical-specification; do
-  ln -s "$HOME/src/agentic-engineering/$skill" "$HOME/.claude/skills/$skill"
+  ln -s "$HOME/src/agentic-engineering/skills/$skill" "$HOME/.claude/skills/$skill"
 done
 ```
-
-<details>
-<summary><b>Other install targets</b> — single project · Codex · Cursor / Copilot / any agent</summary>
 
 **Claude Code — single project:**
 
 ```bash
 git clone https://github.com/affectionatec/agentic-engineering.git
 mkdir -p your-project/.claude/skills
-cp -r agentic-engineering/*/ your-project/.claude/skills/
+cp -r agentic-engineering/skills/*/ your-project/.claude/skills/
 ```
 
-**Codex:** same `SKILL.md` directory format — copy the skill directories into your skills location and invoke with `$` or `/skills`.
+**Codex:** same `SKILL.md` directory format — copy the directories under `skills/` into your skills location and invoke with `$` or `/skills`.
 
 **Any other agent (Cursor, Copilot, Windsurf, …):** the skills are plain markdown playbooks, and the documents they produce (the `AGENTS.md` chain) are tool-agnostic by design. Even without native skill support, use a `SKILL.md` as a rules file or system prompt — and every tool reads the same `AGENTS.md` through its pointer file.
 
 </details>
 
-**Invoke** — two ways:
-
-- **Auto-trigger** — each skill's frontmatter `description` declares its triggers ("write the spec", "where are we", "verify this task", session start/end). Agents that read skill metadata surface the right skill at the right moment.
-- **Explicit** — name it: *"Use the project-kickoff-prd skill: I want to build …"*
-
 ### Your First Project
 
 | Step | You say | Skill that fires | You get |
 |------|---------|------------------|---------|
-| 0 | "Set up AGENTS.md for this repo" | [agents-md-template](agents-md-template/SKILL.md) | `AGENTS.md` + one-line pointer files for every tool |
-| 1 | "Let's kick off: I want to build X" | [project-kickoff-prd](project-kickoff-prd/SKILL.md) | `docs/prd.md` after a phased dialogue |
-| 2 | "Write the specs" | [technical-specification](technical-specification/SKILL.md) | `docs/spec/*.md`, one per domain |
-| 3 | "Should we use X or Y?" *(any decision fork, any time)* | [architecture-decision-record](architecture-decision-record/SKILL.md) | `docs/adr/ADR-NNN-*.md` |
-| 4 | "Break this into tasks" | [implementation-plan](implementation-plan/SKILL.md) | `docs/plans/implementation-plan.md` |
-| 5 | "Pick up the next task" *(every session)* | [status-tracker](status-tracker/SKILL.md) | Briefing from `docs/status.md`, work resumes where it left off |
-| 6 | "Verify M1-T1" *(fresh session or sub-agent)* | [independent-verification](independent-verification/SKILL.md) | PASS/FAIL verdict with evidence in `docs/verification-log.md` |
+| 0 | "Set up AGENTS.md for this repo" | [agents-md-template](skills/agents-md-template/SKILL.md) | `AGENTS.md` + one-line pointer files for every tool |
+| 1 | "Let's kick off: I want to build X" | [project-kickoff-prd](skills/project-kickoff-prd/SKILL.md) | `docs/prd.md` after a phased dialogue |
+| 2 | "Write the specs" | [technical-specification](skills/technical-specification/SKILL.md) | `docs/spec/*.md`, one per domain |
+| 3 | "Should we use X or Y?" *(any decision fork, any time)* | [architecture-decision-record](skills/architecture-decision-record/SKILL.md) | `docs/adr/ADR-NNN-*.md` |
+| 4 | "Break this into tasks" | [implementation-plan](skills/implementation-plan/SKILL.md) | `docs/plans/implementation-plan.md` |
+| 5 | "Pick up the next task" *(every session)* | [status-tracker](skills/status-tracker/SKILL.md) | Briefing from `docs/status.md`, work resumes where it left off |
+| 6 | "Verify M1-T1" *(fresh session or sub-agent)* | [independent-verification](skills/independent-verification/SKILL.md) | PASS/FAIL verdict with evidence in `docs/verification-log.md` |
 
 ## Where This Sits — The Harness Layer
 
@@ -234,7 +241,7 @@ How the chain maps to the convergent primitives of [long-running agents](https:/
 |---|---|
 | External completion criteria — "done" defined before work starts | SPEC acceptance criteria (with verification commands) + IMPL PLAN locked done conditions |
 | Persistent state outside the context window | STATUS handoff log + In-Flight Checkpoint |
-| Independent evaluator — maker-checker separation | [independent-verification](independent-verification/SKILL.md) + `docs/verification-log.md` |
+| Independent evaluator — maker-checker separation | [independent-verification](skills/independent-verification/SKILL.md) + `docs/verification-log.md` |
 | Checkpoint cadence — every N work units, not only at the end | STATUS checkpoint protocol (task granularity) |
 | Project knowledge that survives sessions | AGENTS.md single source of truth |
 | Decision history that can't be silently rewritten | ADR (append-only, supersede-only) |
