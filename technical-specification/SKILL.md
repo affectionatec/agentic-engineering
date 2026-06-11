@@ -16,7 +16,7 @@ description: Use when the PRD is finalized and precise implementation contracts 
 | **Output** | `docs/spec/[domain-name].md` — one per domain, never monolithic |
 | **Sequence** | PRD → **SPEC** → ADR → IMPL PLAN |
 | **Iron rule** | Every number concrete. Every boundary has a violation response. No "etc." |
-| **Sibling skills** | [[project-kickoff-prd]] · [[architecture-decision-record]] · [[implementation-plan]] · [[status-tracker]] |
+| **Sibling skills** | [[project-kickoff-prd]] · [[architecture-decision-record]] · [[implementation-plan]] · [[status-tracker]] · [[independent-verification]] |
 
 ## System Prompt
 
@@ -101,6 +101,14 @@ For every feature/endpoint, write explicit testable criteria:
 - Include happy path, edge cases, error cases, concurrency cases
 - Include performance criteria: "responds in < 200ms at p95 under 100 rps"
 - Include data criteria: "handles payloads up to 5MB", "supports UTF-8 including emoji"
+
+**Bind every criterion to a verification method.** Acceptance criteria are the done condition an independent verifier (→ [[independent-verification]]) executes after implementation — written here, before any code exists, so the producer cannot redefine "done" mid-run. For each criterion specify:
+
+- **Verify via** — the exact command or check the verifier runs (test invocation, curl + assertion, build step)
+- **Evidence** — what output proves it (exit code, test count, response field value)
+- If a criterion genuinely cannot be machine-checked, mark it `MANUAL` with explicit reviewer instructions — but treat every `MANUAL` as a smell and try to automate it first.
+
+A criterion without a verification method is not finished being written.
 
 ---
 
@@ -218,11 +226,16 @@ What this spec covers, its boundaries, and how it connects to other specs.
 
 ## 7. Acceptance Criteria
 
+> Each criterion carries its verification method. The independent verifier runs the **Verify via** column exactly as written — if the command can't be executed from this table alone, the criterion isn't ready.
+
 ### 7.1 [Feature/Endpoint]
 
-- [ ] **Given** [precondition] **When** [action] **Then** [outcome]
-- [ ] **Given** [edge case] **When** [action] **Then** [specific handling]
-- [ ] **Given** [error condition] **When** [action] **Then** [error response]
+| # | Criterion (Given / When / Then) | Verify via | Evidence |
+|---|--------------------------------|------------|----------|
+| 1 | **Given** [precondition] **When** [action] **Then** [outcome] | `pytest tests/test_x.py::test_happy_path` | exit 0, 1/1 passed |
+| 2 | **Given** [edge case] **When** [action] **Then** [specific handling] | `curl -s -X POST .../endpoint -d @oversize.json` | response `413`, error code `PAYLOAD_TOO_LARGE` |
+| 3 | **Given** [error condition] **When** [action] **Then** [error response] | `pytest tests/test_x.py::test_conflict` | exit 0, asserts status 409 |
+| 4 | [UI/judgment criterion if unavoidable] | `MANUAL` — [exact reviewer instructions] | [screenshot / reviewer note] |
 
 ## 8. Dependencies
 
@@ -244,7 +257,7 @@ Anything needing clarification before implementation begins.
 3. **Never use "etc." or "and so on."** List everything explicitly or say "exhaustive list to be determined in Phase X."
 4. **One spec per domain.** If a spec exceeds 500 lines, it's covering too much — split it.
 5. **Specs are immutable once approved.** Changes require a new version with a changelog at the top. Reference the ADR that motivated the change.
-6. **Acceptance criteria are executable.** Each criterion maps to exactly one test. If you can't write the test from the criterion alone, it's not precise enough.
+6. **Acceptance criteria are executable.** Each criterion maps to exactly one test and names its verification command. The independent verifier runs exactly what's written — no interpretation. If you can't write the test from the criterion alone, it's not precise enough.
 7. **No implementation details in specs.** Specs say WHAT, not HOW. "Passwords must be hashed with bcrypt cost 12" is a spec. "Use the bcrypt library's hash() function" is implementation.
 8. **Cross-reference ADRs for every architectural choice.** If the spec says "use event sourcing," there must be an ADR explaining why.
 
@@ -266,3 +279,4 @@ Once specs are approved:
 - Any architectural choices made → record as **ADR** (→ [[architecture-decision-record]])
 - Ready to break into tasks → create **IMPL PLAN** (→ [[implementation-plan]])
 - Specs become the single source of truth for implementation — Agents follow the contract exactly
+- The acceptance criteria tables become the verifier's input — after each task is built, the independent verifier executes them as written (→ [[independent-verification]])

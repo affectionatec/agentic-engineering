@@ -16,7 +16,7 @@ description: Use when specs are approved and work needs to be broken into indepe
 | **Output** | `docs/plans/implementation-plan.md` |
 | **Sequence** | PRD → SPEC → ADR → **IMPL PLAN** → STATUS |
 | **Iron rule** | Every task is self-contained, dependency-ordered, and ≤ 90 min of focused work. |
-| **Sibling skills** | [[project-kickoff-prd]] · [[technical-specification]] · [[architecture-decision-record]] · [[status-tracker]] |
+| **Sibling skills** | [[project-kickoff-prd]] · [[technical-specification]] · [[architecture-decision-record]] · [[status-tracker]] · [[independent-verification]] |
 
 ## System Prompt
 
@@ -77,7 +77,7 @@ For each milestone, break into individual tasks. Each task must specify:
 4. **Dependencies** — which tasks must be complete first (by ID)
 5. **Files touched** — specific paths that will be created or modified
 6. **Spec reference** — which spec section(s) this task implements
-7. **Acceptance criteria** — how to verify it's done (specific tests to write and pass)
+7. **Acceptance criteria** — the task's **done condition**: each criterion bound to an executable command and expected result. The independent verifier runs these as written after the task is built (→ [[independent-verification]]) — write them so a fresh agent with zero context can execute them.
 8. **Estimated scope** — S (< 30 min), M (30-60 min), L (60-90 min). If > L, split it.
 
 #### Phase 4: Risk Identification
@@ -137,10 +137,11 @@ Estimated minimum: [N] sessions
 | **Spec ref** | spec/auth.md §2.1 |
 | **Size** | S / M / L |
 
-**Acceptance criteria:**
-- [ ] [Entity] table created with all fields per spec
-- [ ] Validation rejects [specific invalid input]
-- [ ] [N] unit tests pass covering [scenarios]
+**Acceptance criteria (done condition — locked once the task starts):**
+- [ ] [Entity] table created with all fields per spec — verify: `pytest tests/test_models.py` exits 0
+- [ ] Validation rejects [specific invalid input] — verify: `pytest tests/test_models.py::test_rejects_invalid` 1/1
+- [ ] [N] new unit tests pass covering [scenarios]; full suite count ≥ [baseline + N]
+- [ ] Independent verifier returns PASS (→ [[independent-verification]])
 
 ---
 
@@ -168,6 +169,8 @@ Estimated minimum: [N] sessions
 
 - M2-T1 and M2-T3 can run in parallel (no shared dependencies)
 - M3-T1 through M3-T3 are independent vertical slices
+
+> Parallel agents must be isolated: one git worktree (or branch) per agent, merging through the verification gate. Worktrees solve mechanical conflicts only — human review bandwidth sets the real ceiling on how many agents run at once.
 
 ## Rollback Points
 
@@ -197,6 +200,8 @@ If a task feels like L+, apply these splitting strategies:
 6. **Acceptance criteria are copy-pasteable.** An engineer should be able to read the criteria and immediately know what command to run or what test to write.
 7. **The plan is mutable until work begins.** Once M1 starts, the plan for M1 is locked. Future milestones can still be adjusted based on what's learned.
 8. **Include "what changed" when updating.** If the plan is revised during execution, note what changed and why (reference the ADR if it's an architectural shift).
+9. **Done is a verdict, not a claim.** A task is complete when the independent verifier returns PASS against its done condition (→ [[independent-verification]]) — never when the producer says so. The producer's self-check is necessary, never sufficient.
+10. **Done conditions are locked at task start.** The executing agent cannot weaken, reinterpret, or skip acceptance criteria mid-task. Changing a criterion requires explicit user approval — and an ADR if the change is architectural.
 
 ### Anti-Patterns (Do Not)
 
@@ -215,3 +220,4 @@ Once the plan is approved and work begins:
 - Create **STATUS.md** immediately (→ [[status-tracker]])
 - The first session picks up M1-T1 and updates STATUS at session end
 - Every new Agent session reads STATUS first, finds the next unblocked task, and executes it
+- Every completed task passes through the verification gate before STATUS marks it ✅ (→ [[independent-verification]])

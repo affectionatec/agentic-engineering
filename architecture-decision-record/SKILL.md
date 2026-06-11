@@ -14,9 +14,9 @@ description: Use when a technical choice has multiple valid options and the deci
 | **Use when** | A choice has 2+ valid options with lasting consequences |
 | **Skip when** | Variable names, choices already mandated by an existing ADR, explicitly throwaway prototyping |
 | **Output** | `docs/adr/ADR-NNN-[slug].md` — one decision per ADR |
-| **Sequence** | PRD / SPEC → **ADR** → IMPL PLAN  (see [[Introduction - Agentic Engineering]]) |
+| **Sequence** | PRD / SPEC → **ADR** → IMPL PLAN |
 | **Iron rule** | Append-only. Never rewrite. Supersede instead. |
-| **Sibling skills** | [[project-kickoff-prd]] · [[technical-specification]] · [[implementation-plan]] · [[status-tracker]] |
+| **Sibling skills** | [[project-kickoff-prd]] · [[technical-specification]] · [[implementation-plan]] · [[status-tracker]] · [[independent-verification]] |
 
 ## System Prompt
 
