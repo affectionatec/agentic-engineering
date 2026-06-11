@@ -1,0 +1,147 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 710" font-family="-apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="m-gray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/>
+    </marker>
+    <marker id="m-purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#a78bfa"/>
+    </marker>
+    <marker id="m-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#f87171"/>
+    </marker>
+    <marker id="m-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#4ade80"/>
+    </marker>
+    <marker id="m-amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#fbbf24"/>
+    </marker>
+    <marker id="m-teal" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#2dd4bf"/>
+    </marker>
+  </defs>
+
+  <style>
+    .box { fill: #1e293b; rx: 12; }
+    .title { fill: #f1f5f9; font-size: 15px; font-weight: 600; text-anchor: middle; }
+    .sub { fill: #94a3b8; font-size: 12px; text-anchor: middle; }
+    .edge { stroke: #64748b; stroke-width: 1.6; fill: none; }
+    .lbl { font-size: 11.5px; text-anchor: middle; }
+    .seclbl { fill: #64748b; font-size: 11px; letter-spacing: 2px; font-weight: 600; }
+  </style>
+
+  <!-- background -->
+  <rect x="0" y="0" width="1280" height="710" rx="18" fill="#0f172a"/>
+
+  <!-- section label -->
+  <text class="seclbl" x="292" y="26">PLANNING — CONTRACTS BEFORE CODE</text>
+
+  <!-- top row: AGENTS.md -> PRD -> SPEC -> IMPL PLAN, ADR right -->
+  <rect class="box" x="36" y="38" width="204" height="76" rx="12" stroke="#f59e0b" stroke-width="1.6"/>
+  <text class="title" x="138" y="70">🚪 AGENTS.md — The Door</text>
+  <text class="sub" x="138" y="92">single source of truth</text>
+
+  <path class="edge" d="M 240 76 L 290 76" marker-end="url(#m-gray)"/>
+
+  <rect class="box" x="292" y="38" width="150" height="76" rx="12" stroke="#38bdf8" stroke-width="1.6"/>
+  <text class="title" x="367" y="70">📋 PRD</text>
+  <text class="sub" x="367" y="92">The Why</text>
+
+  <path class="edge" d="M 442 76 L 492 76" marker-end="url(#m-gray)"/>
+
+  <rect class="box" x="494" y="38" width="150" height="76" rx="12" stroke="#818cf8" stroke-width="1.6"/>
+  <text class="title" x="569" y="70">📐 SPEC</text>
+  <text class="sub" x="569" y="92">The Contract</text>
+
+  <path class="edge" d="M 644 76 L 694 76" marker-end="url(#m-gray)"/>
+
+  <rect class="box" x="696" y="38" width="180" height="76" rx="12" stroke="#a78bfa" stroke-width="1.6"/>
+  <text class="title" x="786" y="70">🗂️ IMPL PLAN</text>
+  <text class="sub" x="786" y="92">The Sequence</text>
+
+  <rect class="box" x="1010" y="38" width="234" height="76" rx="12" stroke="#c084fc" stroke-width="1.6"/>
+  <text class="title" x="1127" y="70">⚖️ ADR — The Law</text>
+  <text class="sub" x="1127" y="92">append-only decisions</text>
+
+  <!-- dashed decision-fork arcs into ADR -->
+  <path d="M 367 38 C 367 6, 1050 0, 1090 36" stroke="#a78bfa" stroke-width="1.4" stroke-dasharray="5 5" fill="none" marker-end="url(#m-purple)"/>
+  <path d="M 569 38 C 569 14, 1030 10, 1075 36" stroke="#a78bfa" stroke-width="1.4" stroke-dasharray="5 5" fill="none" marker-end="url(#m-purple)"/>
+  <path d="M 876 70 L 1008 70" stroke="#a78bfa" stroke-width="1.4" stroke-dasharray="5 5" fill="none" marker-end="url(#m-purple)"/>
+  <text class="lbl" x="942" y="62" fill="#a78bfa">decision fork — any time</text>
+
+  <!-- dashed: ADR constraints flow back into the plan -->
+  <path d="M 1100 114 C 1050 162, 920 162, 880 118" stroke="#a78bfa" stroke-width="1.4" stroke-dasharray="5 5" fill="none" marker-end="url(#m-purple)"/>
+  <text class="lbl" x="996" y="168" fill="#a78bfa">locked constraints</text>
+
+  <!-- IMPL PLAN down into the loop -->
+  <path class="edge" d="M 786 114 L 786 196" marker-end="url(#m-gray)"/>
+
+  <!-- execution loop container -->
+  <rect x="36" y="200" width="1208" height="348" rx="16" fill="#162136" opacity="0.6" stroke="#334155" stroke-width="1.4"/>
+  <text class="seclbl" x="56" y="230">EXECUTION LOOP — EVERY TASK</text>
+  <text class="seclbl" x="1224" y="230" text-anchor="end">DRIVEN BY /RUN-LOOP OR BY HAND</text>
+
+  <!-- loop row A -->
+  <rect class="box" x="56" y="252" width="190" height="78" rx="12" stroke="#2dd4bf" stroke-width="1.6"/>
+  <text class="title" x="151" y="284">📝 Read STATUS</text>
+  <text class="sub" x="151" y="306">crash recovery via checkpoint</text>
+
+  <path class="edge" d="M 246 291 L 280 291" marker-end="url(#m-gray)"/>
+
+  <rect class="box" x="282" y="252" width="176" height="78" rx="12" stroke="#34d399" stroke-width="1.6"/>
+  <text class="title" x="370" y="284">🌿 Branch</text>
+  <text class="sub" x="370" y="306">task/&lt;id&gt; · git-workflow</text>
+
+  <path class="edge" d="M 458 291 L 492 291" marker-end="url(#m-gray)"/>
+
+  <rect class="box" x="494" y="252" width="190" height="78" rx="12" stroke="#60a5fa" stroke-width="1.6"/>
+  <text class="title" x="589" y="284">🛠️ Build + self-check</text>
+  <text class="sub" x="589" y="306">lint · tests · ratchet</text>
+
+  <path class="edge" d="M 684 291 L 718 291" marker-end="url(#m-gray)"/>
+
+  <rect class="box" x="720" y="252" width="180" height="78" rx="12" stroke="#fbbf24" stroke-width="1.6"/>
+  <text class="title" x="810" y="284">📬 Draft PR</text>
+  <text class="sub" x="810" y="306">carries the done condition</text>
+
+  <path class="edge" d="M 900 291 L 934 291" marker-end="url(#m-gray)"/>
+
+  <rect class="box" x="936" y="252" width="288" height="78" rx="12" stroke="#4ade80" stroke-width="1.6"/>
+  <text class="title" x="1080" y="284">🔍 VERIFY — The Gate</text>
+  <text class="sub" x="1080" y="306">verifier sub-agent · fresh context</text>
+
+  <!-- FAIL arc back to build -->
+  <path d="M 980 330 C 900 395, 680 395, 602 334" stroke="#f87171" stroke-width="1.6" fill="none" marker-end="url(#m-red)"/>
+  <text class="lbl" x="790" y="390" fill="#f87171">FAIL — fix on the same branch · ≤ 3 rounds</text>
+
+  <!-- PASS down to record -->
+  <path d="M 1080 330 L 1080 422" stroke="#4ade80" stroke-width="1.8" fill="none" marker-end="url(#m-green)"/>
+  <text class="lbl" x="1104" y="382" fill="#4ade80" font-weight="600">PASS</text>
+
+  <!-- escalate (circuit breaker) -->
+  <path d="M 948 326 C 700 458, 450 460, 294 462" stroke="#f87171" stroke-width="1.4" stroke-dasharray="5 5" fill="none" marker-end="url(#m-red)"/>
+
+  <rect class="box" x="56" y="424" width="234" height="78" rx="12" stroke="#f87171" stroke-width="1.6"/>
+  <text class="title" x="173" y="456">⛔ Circuit breaker</text>
+  <text class="sub" x="173" y="478">3rd FAIL → stop · escalate to user</text>
+
+  <rect class="box" x="936" y="424" width="288" height="78" rx="12" stroke="#2dd4bf" stroke-width="1.6"/>
+  <text class="title" x="1080" y="456">✅ Record — The Memory</text>
+  <text class="sub" x="1080" y="478">STATUS ✅ · verdict + PR refs · PR → ready</text>
+
+  <!-- next task return -->
+  <path d="M 1040 502 C 1000 540, 420 545, 374 336" stroke="#2dd4bf" stroke-width="1.6" fill="none" marker-end="url(#m-teal)"/>
+  <text class="lbl" x="700" y="536" fill="#2dd4bf">next task</text>
+
+  <!-- ready PR down to human gate -->
+  <path d="M 1150 502 L 1150 590" stroke="#fbbf24" stroke-width="1.8" fill="none" marker-end="url(#m-amber)"/>
+  <text class="lbl" x="1180" y="560" fill="#fbbf24">ready PR</text>
+
+  <!-- human gate -->
+  <rect class="box" x="816" y="592" width="428" height="82" rx="12" stroke="#fb923c" stroke-width="1.8"/>
+  <text class="title" x="1030" y="626">🧑‍💻 HUMAN GATE — merge</text>
+  <text class="sub" x="1030" y="648">read the diff · explain it · only a human merges</text>
+
+  <!-- captions -->
+  <text x="36" y="618" fill="#94a3b8" font-size="13px">Loop output: a queue of verified, evidence-carrying PRs — merged code is always a human's move.</text>
+  <text x="36" y="642" fill="#64748b" font-size="13px">Session end → handoff log entry → the next session resumes exactly here. The agent forgets; the repo doesn't.</text>
+</svg>

@@ -22,7 +22,7 @@
 
 ## How the Skills Flow
 
-<img width="2816" height="1536" alt="Gemini_Generated_Image_6rddrw6rddrw6rdd" src="https://github.com/user-attachments/assets/859e2f6a-d1e1-4dab-bee0-985f7b05956d" />
+![How the skills flow — from AGENTS.md through the planning chain, the verify-gated execution loop, and the human merge gate](assets/skills-flow.svg)
 
 ADRs can be triggered at any point along the chain — whenever a decision fork appears in PRD, SPEC, or IMPL PLAN work. VERIFY loops every task: build → independent verdict → only PASS marks ✅. STATUS loops every session forever. Code travels per GIT WORKFLOW: a branch per task, a draft PR carrying the done condition, ready only on PASS, merged only by a human.
 
