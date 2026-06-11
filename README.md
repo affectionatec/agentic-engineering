@@ -21,45 +21,7 @@
 
 ## How the Skills Flow
 
-```mermaid
-flowchart TD
-    AGENTS["🚪 AGENTS.md — The Door<br/><i>agents-md-template</i><br/>single source of truth"]
-
-    subgraph PLANNING["Planning chain — contracts before code"]
-        PRD["📋 PRD — The Why<br/><i>project-kickoff-prd</i>"]
-        SPEC["📐 SPEC — The Contract<br/><i>technical-specification</i>"]
-        IMPL["🗂️ IMPL PLAN — The Sequence<br/><i>implementation-plan</i>"]
-    end
-
-    ADR["⚖️ ADR — The Law<br/><i>architecture-decision-record</i><br/>append-only decisions"]
-
-    subgraph EXEC["Execution loop — every task, every session"]
-        READ["Read STATUS<br/>+ crash recovery via<br/>in-flight checkpoint"]
-        BUILD["Producer builds the task<br/>+ self-check"]
-        VERIFY["🔍 VERIFY — The Gate<br/><i>independent-verification</i><br/>fresh context, evidence"]
-        RECORD["📝 STATUS — The Memory<br/><i>status-tracker</i><br/>checkpoint, mark ✅"]
-    end
-
-    HUMAN["🧑‍💻 Human gate<br/>read the diff, explain it, merge"]
-    ESCALATE["⛔ Circuit breaker<br/>escalate to the user"]
-
-    AGENTS --> PRD
-    PRD --> SPEC
-    SPEC --> IMPL
-    PRD -. "decision fork" .-> ADR
-    SPEC -. "decision fork" .-> ADR
-    IMPL -. "decision fork" .-> ADR
-    ADR -. "locked constraints" .-> IMPL
-    IMPL --> READ
-    READ --> BUILD
-    BUILD --> VERIFY
-    VERIFY -- "PASS" --> RECORD
-    VERIFY -- "FAIL (round ≤ 3)" --> BUILD
-    VERIFY -- "3rd consecutive FAIL" --> ESCALATE
-    RECORD -- "next task" --> BUILD
-    RECORD -- "session end → handoff log" --> READ
-    RECORD --> HUMAN
-```
+<img width="2816" height="1536" alt="Gemini_Generated_Image_6rddrw6rddrw6rdd" src="https://github.com/user-attachments/assets/859e2f6a-d1e1-4dab-bee0-985f7b05956d" />
 
 ADRs can be triggered at any point along the chain — whenever a decision fork appears in PRD, SPEC, or IMPL PLAN work. VERIFY loops every task: build → independent verdict → only PASS marks ✅. STATUS loops every session forever.
 
