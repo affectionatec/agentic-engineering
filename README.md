@@ -1,16 +1,15 @@
 # Agentic Engineering — Documentation-First Development
 
+> Seven skills that give coding agents persistent memory, zero-ambiguity contracts, and an independent definition of "done" — the harness layer for long-running, loop-driven development.
+
 ## The Core Problem
 
 **AI Agents are stateless.** Every new session starts from zero — your naming conventions, error handling patterns, architectural constraints are unknown. Without structured documentation, the Agent guesses, causing **context collapse**: code that runs but is architecturally incoherent.
 
 > *The most effective agentic coding workflow starts before the first prompt — with a written spec the agent builds to, not assumptions it makes on its own.* — [Blink](https://blink.new/blog/agentic-coding-best-practices)
 
-## This Skill Suite
+**What this suite solves:**
 
-A documentation chain that gives Agents full project context from day one, stays current through dynamic updates, and enables seamless handoff between sessions and agents.
-
-**What it solves:**
 - Agent produces code that contradicts existing architecture → **SPEC provides the contract**
 - Agent makes decisions you already resolved → **ADR preserves decision history**
 - New session has no idea what happened last time → **STATUS provides memory**
@@ -19,6 +18,217 @@ A documentation chain that gives Agents full project context from day one, stays
 - Agent claims "done" when it isn't → **VERIFICATION makes done a verdict, not a claim**
 - Crash mid-session loses all progress → **STATUS checkpoints at task granularity**
 - Tools each demand their own config → **AGENTS.md is the single entry point**
+
+---
+
+## Quick Start
+
+### Install
+
+Each skill is a directory containing a `SKILL.md` (the shared format used by Claude Code and Codex):
+
+```
+agentic-engineering/
+├── README.md
+├── agents-md-template/SKILL.md
+├── architecture-decision-record/SKILL.md
+├── implementation-plan/SKILL.md
+├── independent-verification/SKILL.md
+├── project-kickoff-prd/SKILL.md
+├── status-tracker/SKILL.md
+└── technical-specification/SKILL.md
+```
+
+**Claude Code — personal, available in every project:**
+
+```bash
+git clone https://github.com/affectionatec/agentic-engineering.git ~/src/agentic-engineering
+
+mkdir -p ~/.claude/skills
+for skill in agents-md-template architecture-decision-record implementation-plan \
+             independent-verification project-kickoff-prd status-tracker \
+             technical-specification; do
+  ln -s "$HOME/src/agentic-engineering/$skill" "$HOME/.claude/skills/$skill"
+done
+```
+
+**Claude Code — single project:**
+
+```bash
+git clone https://github.com/affectionatec/agentic-engineering.git
+mkdir -p your-project/.claude/skills
+cp -r agentic-engineering/*/ your-project/.claude/skills/
+```
+
+**Codex:** same `SKILL.md` directory format — copy the skill directories into your skills location and invoke with `$` or `/skills`.
+
+**Any other agent (Cursor, Copilot, Windsurf, …):** the skills are plain markdown playbooks, and the documents they produce (the `AGENTS.md` chain) are tool-agnostic by design. Even without native skill support, use a `SKILL.md` as a rules file or system prompt — and every tool reads the same `AGENTS.md` through its pointer file.
+
+### Invoke
+
+- **Auto-trigger** — each skill's frontmatter `description` declares its triggers ("write the spec", "where are we", "verify this task", session start/end). Agents that read skill metadata surface the right skill at the right moment.
+- **Explicit** — name it: *"Use the project-kickoff-prd skill: I want to build …"*
+
+### Your First Project
+
+| Step | You say | Skill that fires | You get |
+|------|---------|------------------|---------|
+| 0 | "Set up AGENTS.md for this repo" | [agents-md-template](agents-md-template/SKILL.md) | `AGENTS.md` + one-line pointer files for every tool |
+| 1 | "Let's kick off: I want to build X" | [project-kickoff-prd](project-kickoff-prd/SKILL.md) | `docs/prd.md` after a phased dialogue |
+| 2 | "Write the specs" | [technical-specification](technical-specification/SKILL.md) | `docs/spec/*.md`, one per domain |
+| 3 | "Should we use X or Y?" *(any decision fork, any time)* | [architecture-decision-record](architecture-decision-record/SKILL.md) | `docs/adr/ADR-NNN-*.md` |
+| 4 | "Break this into tasks" | [implementation-plan](implementation-plan/SKILL.md) | `docs/plans/implementation-plan.md` |
+| 5 | "Pick up the next task" *(every session)* | [status-tracker](status-tracker/SKILL.md) | Briefing from `docs/status.md`, work resumes where it left off |
+| 6 | "Verify M1-T1" *(fresh session or sub-agent)* | [independent-verification](independent-verification/SKILL.md) | PASS/FAIL verdict with evidence in `docs/verification-log.md` |
+
+---
+
+## The Skills
+
+| Skill | What it does | Use when |
+|-------|--------------|----------|
+| [agents-md-template](agents-md-template/SKILL.md) | Bootstraps `AGENTS.md` as the single source of truth all tool configs point to | New repo, or consolidating scattered agent configs |
+| [project-kickoff-prd](project-kickoff-prd/SKILL.md) | Phased dialogue that turns a rough idea into a prioritized PRD | Starting a project or feature; scope, users, or success metrics undefined |
+| [technical-specification](technical-specification/SKILL.md) | Zero-ambiguity contracts: data models, APIs, state machines, error taxonomies, verifiable acceptance criteria | PRD finalized, before any code is written |
+| [architecture-decision-record](architecture-decision-record/SKILL.md) | Append-only decision history with trade-offs, reversibility, and review triggers | Any fork with 2+ valid options and lasting consequences |
+| [implementation-plan](implementation-plan/SKILL.md) | Dependency-ordered atomic tasks with locked, executable done conditions | Specs approved, ready to sequence the build |
+| [independent-verification](independent-verification/SKILL.md) | Fresh-context verifier turns "done" from a claim into an evidence-backed verdict | Every task completion, before anything is marked ✅ |
+| [status-tracker](status-tracker/SKILL.md) | Living memory: live progress, in-run checkpoints, crash recovery, session handoffs | Every session — read first, update last |
+
+### 1. agents-md-template — The Door
+
+*Bootstraps a repo with `AGENTS.md` as the single source of truth every agent reads before doing anything.* Produces `AGENTS.md` + pointer files.
+
+| Mechanism | What it does |
+|-----------|--------------|
+| **One door** | `CLAUDE.md`, `copilot-instructions.md`, `.cursor/rules/` are one-line pointers to `AGENTS.md` — every tool gets identical instructions, zero config drift |
+| **Six-section anatomy** | Project identity → documentation chain → coding conventions → architecture constraints → boundaries → verification |
+| **Session protocol** | Read memory → code by contract → checkpoint per task → independent verification → handoff. The agent's standing orders for every session |
+| **Explicit boundaries** | A "must NOT" list: no self-grading, no deleting tests to go green, no redefining "done" mid-task, no relitigating locked decisions |
+| **Three-layer verification** | Producer self-check (necessary, never sufficient) → independent gate (fresh-context PASS required) → human gate (read the diff before merge) |
+
+### 2. project-kickoff-prd — The Why
+
+*Turns a rough idea into a structured PRD through phased dialogue — the agent is a co-creator, not a note-taker.* Produces `docs/prd.md`.
+
+| Mechanism | What it does |
+|-----------|--------------|
+| **Co-creator stance** | The agent challenges weak assumptions, surfaces forgotten edge cases, and makes recommendations — it never just transcribes |
+| **Five-phase dialogue** | Problem & vision → features & boundaries → technical direction → extensibility → structured PRD. One phase at a time, confirmation gate between each |
+| **Priority triage** | Every feature lands in P0 (product fails without it) / P1 (ship a week later) / P2 (defer), with explicit out-of-scope and the reasons why |
+| **Convergence pressure** | 2–4 exchanges per phase, never a 20-question interview; vague scope ("it should handle everything") is rejected with "give me three examples" |
+| **ADR candidate flagging** | Consequential choices made mid-dialogue are flagged for capture before they silently become architecture |
+
+### 3. technical-specification — The Contract
+
+*Hardens the PRD into implementation contracts any agent can build from with zero prior context and zero follow-up questions.* Produces `docs/spec/[domain].md`, one per bounded context.
+
+| Mechanism | What it does |
+|-----------|--------------|
+| **Zero-ambiguity rule** | Every number concrete, every boundary has a violation response, "etc." is banned, "should/may" become "must/must not" |
+| **Bounded-context split** | One spec per domain; a spec past 500 lines is covering too much and gets split |
+| **Six-phase coverage** | Data model (with invariants) → API contracts (rate limits, idempotency, retries) → state machines (invalid transitions defined) → error taxonomy → non-functional requirements → acceptance criteria |
+| **Machine-verifiable criteria** | Every acceptance criterion binds **Verify via** (the exact command) + **Evidence** (what output proves it); human-judgment checks are explicitly `MANUAL` — and treated as a smell |
+| **Immutable once approved** | Changes require a new version, a changelog, and the ADR that motivated them — the contract can't drift under the implementer |
+
+### 4. architecture-decision-record — The Law
+
+*Captures every decision fork with context, options, and trade-offs — append-only, written for the reader six months from now.* Produces `docs/adr/ADR-NNN-[slug].md`.
+
+| Mechanism | What it does |
+|-----------|--------------|
+| **Fork detection** | The agent recognizes "X or Y?" moments — including implicit ones ("let's just use X") — and proposes capturing them before they evaporate |
+| **Append-only history** | Accepted ADRs are never edited; they're superseded by new ones. History stays honest, numbers are never reused |
+| **Fair options analysis** | Rejected options keep their real advantages on record — no strawmanning; future readers may revisit them when context changes |
+| **Reversibility + review triggers** | Every decision records how hard it is to undo (Easy → Irreversible) and the concrete conditions for reconsidering it |
+| **Anti-relitigation** | Locked decisions are quick-referenced in `AGENTS.md` and STATUS — agents don't reopen them without the user |
+
+### 5. implementation-plan — The Sequence
+
+*Decomposes approved specs into dependency-ordered atomic tasks any agent can execute in a single session.* Produces `docs/plans/implementation-plan.md`.
+
+| Mechanism | What it does |
+|-----------|--------------|
+| **Atomic tasks** | Self-contained, ≤ 90 minutes, ≤ 5 files, with named file paths and spec references — zero reading between the lines |
+| **Dependency order, not importance** | The flashy feature waits for its boring infrastructure; every milestone ends in demonstrable state you can run, show, or prove |
+| **Locked done conditions** | Each task's acceptance criteria bind executable commands and are frozen at task start — the executing agent cannot weaken them mid-run |
+| **Done is a verdict** | A task completes when the independent verifier returns PASS — never when the producer claims it |
+| **Worktree isolation** | Parallel tasks get parallel git worktrees, merging through the verification gate; review bandwidth, not git, is the real parallelism ceiling |
+| **Risk register + rollback points** | Risks acknowledged before they become surprises; milestones double as safe pause-or-pivot points |
+
+### 6. independent-verification — The Gate
+
+*The maker-checker gate: a verifier with fresh context executes the done condition as written and returns a verdict with evidence.* Produces `docs/verification-log.md`.
+
+| Mechanism | What it does |
+|-----------|--------------|
+| **Role separation** | The producer builds and self-checks; a separate verifier judges. The model that wrote the code never grades it |
+| **Fresh-context requirement** | The verifier runs as a sub-agent or fresh session and never sees the producer's conversation — inherited reasoning means inherited blind spots |
+| **Evidence-based verdicts** | Binary PASS/FAIL per criterion with commands, exit codes, and key output — "looks good" is not a verdict |
+| **Test ratchet** | The suite count only goes up; a deleted or skipped test is an automatic FAIL regardless of everything else |
+| **Circuit breaker** | Three consecutive FAILs on one task stops the loop and escalates to the user — no infinite fix-verify ping-pong |
+| **Human gate** | A machine PASS is necessary, not sufficient: a human reads the diff and can explain it before merge |
+| **Cost discipline** | Dual-opinion where stakes justify it — always for main, data, auth, money; a cheaper model is fine for mechanical checks |
+
+### 7. status-tracker — The Memory
+
+*The bridge between sessions: live progress, in-run checkpoints, and an append-only handoff log.* Produces `docs/status.md`.
+
+| Mechanism | What it does |
+|-----------|--------------|
+| **Session handoff log** | Append-only, newest first: what was built, how it connects, what was verified (exact counts), caveats, and the literal next action |
+| **In-flight checkpoint** | Updated at task granularity during the session — a crash costs at most one task, never the session |
+| **Crash detection** | A checkpoint that isn't `none` at session start means the last session died mid-work; the checkpoint is the recovery point |
+| **Four-state lifecycle** | ⬜ not started → 🟡 in progress → 🔍 built, awaiting verification → ✅ verified done. ✅ requires a verifier verdict, not a producer claim |
+| **Numbers discipline** | "232/232 pytest", named files, named components — vague entries ("made progress") are banned |
+
+---
+
+## How the Skills Flow
+
+```mermaid
+flowchart TD
+    AGENTS["🚪 AGENTS.md — The Door<br/><i>agents-md-template</i><br/>single source of truth"]
+
+    subgraph PLANNING["Planning chain — contracts before code"]
+        PRD["📋 PRD — The Why<br/><i>project-kickoff-prd</i>"]
+        SPEC["📐 SPEC — The Contract<br/><i>technical-specification</i>"]
+        IMPL["🗂️ IMPL PLAN — The Sequence<br/><i>implementation-plan</i>"]
+    end
+
+    ADR["⚖️ ADR — The Law<br/><i>architecture-decision-record</i><br/>append-only decisions"]
+
+    subgraph EXEC["Execution loop — every task, every session"]
+        READ["Read STATUS<br/>+ crash recovery via<br/>in-flight checkpoint"]
+        BUILD["Producer builds the task<br/>+ self-check"]
+        VERIFY["🔍 VERIFY — The Gate<br/><i>independent-verification</i><br/>fresh context, evidence"]
+        RECORD["📝 STATUS — The Memory<br/><i>status-tracker</i><br/>checkpoint, mark ✅"]
+    end
+
+    HUMAN["🧑‍💻 Human gate<br/>read the diff, explain it, merge"]
+    ESCALATE["⛔ Circuit breaker<br/>escalate to the user"]
+
+    AGENTS --> PRD
+    PRD --> SPEC
+    SPEC --> IMPL
+    PRD -. "decision fork" .-> ADR
+    SPEC -. "decision fork" .-> ADR
+    IMPL -. "decision fork" .-> ADR
+    ADR -. "locked constraints" .-> IMPL
+    IMPL --> READ
+    READ --> BUILD
+    BUILD --> VERIFY
+    VERIFY -- "PASS" --> RECORD
+    VERIFY -- "FAIL (round ≤ 3)" --> BUILD
+    VERIFY -- "3rd consecutive FAIL" --> ESCALATE
+    RECORD -- "next task" --> BUILD
+    RECORD -- "session end → handoff log" --> READ
+    RECORD --> HUMAN
+```
+
+ADRs can be triggered at any point along the chain — whenever a decision fork appears in PRD, SPEC, or IMPL PLAN work. VERIFY loops every task: build → independent verdict → only PASS marks ✅. STATUS loops every session forever.
+
+---
 
 ## Where This Sits — The Harness Layer
 
@@ -42,84 +252,28 @@ How the chain maps to the convergent primitives of [long-running agents](https:/
 - **Locked done conditions** — the executing agent can never weaken acceptance criteria mid-run; changes require the user (and an ADR if architectural).
 - **Human gate** — a machine PASS is necessary, not sufficient: a human reads the diff and can explain it before merge. A loop that outruns your comprehension is accumulating [comprehension debt](https://addyosmani.com/blog/comprehension-debt/), not velocity.
 
-## Layout
-
-This repo is a Claude Code skills collection. Each skill lives in its own directory containing a `SKILL.md`:
-
-```
-agentic-engineering/
-├── README.md
-├── agents-md-template/SKILL.md
-├── architecture-decision-record/SKILL.md
-├── implementation-plan/SKILL.md
-├── independent-verification/SKILL.md
-├── project-kickoff-prd/SKILL.md
-├── status-tracker/SKILL.md
-└── technical-specification/SKILL.md
-```
-
-## Installation (Claude Code)
-
-Clone the repo anywhere, then symlink each skill directory into your personal skills directory (`~/.claude/skills/`):
-
-```bash
-git clone <this-repo> ~/src/agentic-engineering
-
-for skill in agents-md-template architecture-decision-record implementation-plan \
-             independent-verification project-kickoff-prd status-tracker \
-             technical-specification; do
-  ln -s "$HOME/src/agentic-engineering/$skill" "$HOME/.claude/skills/$skill"
-done
-```
-
-Each skill self-describes its triggering conditions in the frontmatter `description`, so Claude (or any agent that reads skill metadata) will surface the right one at the right moment.
-
 ---
 
-## Reference Materials
+## Inspired By
 
-### Development Workflows (pick one)
-- [Matt Pocock Skills](https://github.com/mattpocock/skills) — Skills for real engineers
-- [Superpowers](https://github.com/obra/superpowers) — Agent skill framework
+This suite stands on published patterns and prior art:
 
-### Development Principles
-- [Karpathy-Inspired Guidelines](https://github.com/multica-ai/andrej-karpathy-skills) — Behavioral guardrails for LLM coding
-- [Claude Code Best Practice](https://github.com/shanraisshan/claude-code-best-practice) — Comprehensive reference implementation
+| Source | What this suite takes from it |
+|--------|-------------------------------|
+| [Long-running Agents](https://addyosmani.com/blog/long-running-agents/) — Addy Osmani | External completion criteria, checkpoint cadence, maker-checker separation, "The agent forgets. The repo doesn't." |
+| [Loop Engineering](https://addyosmani.com/blog/loop-engineering/) — Addy Osmani | The harness/loop layering, producer-vs-checker sub-agents, comprehension-debt and cognitive-surrender guardrails |
+| [agent-skills](https://github.com/addyosmani/agent-skills) — Addy Osmani | `SKILL.md` anatomy and the principle that verification is non-negotiable — every skill ends with evidence requirements |
+| [Agent Harness Engineering](https://addyosmani.com/blog/agent-harness-engineering/) — Addy Osmani | The harness concept this suite implements |
+| The Ralph Loop — [Geoffrey Huntley](https://ghuntley.com/ralph/) | Progress lives in files and git history, never in the context window |
+| [Anthropic Engineering](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents) | Context rot, the test ratchet, brain/hands/session separation |
+| [Blink — Agentic Coding Best Practices](https://blink.new/blog/agentic-coding-best-practices) | Start with a written spec the agent builds to, not assumptions it makes |
+| [substratia.io](https://substratia.io/blog/agents-md-vs-claude-md/) | `AGENTS.md` as the single source of truth all tool configs point to |
+| [Michael Nygard — Documenting Architecture Decisions](https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions) | The original ADR format and its append-only discipline |
+| [Matt Pocock Skills](https://github.com/mattpocock/skills) · [Superpowers](https://github.com/obra/superpowers) | Skill-suite structure and developer-workflow references |
+| [Karpathy-Inspired Guidelines](https://github.com/multica-ai/andrej-karpathy-skills) · [Claude Code Best Practice](https://github.com/shanraisshan/claude-code-best-practice) | Behavioral guardrails for LLM-driven coding |
 
 ---
-
-## The Documentation Chain
-
-Design your high-level architecture upfront through conversation with your Agent. If you need flexibility and extensibility, state it in the first conversation — it shapes every document downstream.
-
-### Execution Order
-
-```
-[AGENTS.md (Entry)] → PRD (What & Why) → SPEC (Contract) → ADR (Decisions) → IMPL PLAN (Tasks) → VERIFY (Gate) → STATUS (Memory)
-                            ↑                   ↑                ↑                    ↑                 ↑↺                ↑↺
-                        Co-creation       Machine-readable   Append-only        Single-session    Fresh-context       Live sync
-                         with Agent        zero-ambiguity    decision log       self-contained    verdict, evidence   every session
-                                                                                                  (loops every task)  (loops every session)
-```
-
-ADRs can be triggered at any point along the chain — whenever a decision fork appears in PRD, SPEC, or IMPL PLAN work. VERIFY loops every task: build → independent verdict → only PASS marks ✅. STATUS loops every session forever.
-
-### Document Summary
-
-| Doc | Principle | Core Constraint | Skill |
-|-----|-----------|-----------------|-------|
-| **AGENTS.md** | One door, one source of truth | All tool-specific files point here | [agents-md-template](agents-md-template/SKILL.md) |
-| **PRD** | Co-define, think beyond what I say | Agent is a co-creator, not a note-taker | [project-kickoff-prd](project-kickoff-prd/SKILL.md) |
-| **SPEC** | Machine-readable, correct on first pass | Any Agent can implement with zero prior context | [technical-specification](technical-specification/SKILL.md) |
-| **ADR** | Append-only, future selves | Never rewrite history — write for the reader 6 months from now | [architecture-decision-record](architecture-decision-record/SKILL.md) |
-| **IMPL PLAN** | Single session, zero additional context | Every task is independently executable | [implementation-plan](implementation-plan/SKILL.md) |
-| **VERIFY** | Fresh eyes, evidence or it didn't happen | Producer never grades its own work — done is a verdict | [independent-verification](independent-verification/SKILL.md) |
-| **STATUS** | Session handoff, living memory | Single source of truth for "where we are" | [status-tracker](status-tracker/SKILL.md) |
-
-### AGENTS.md — The Entry Point
-
-> See [agents-md-template](agents-md-template/SKILL.md) for the full template.
-
-`AGENTS.md` is the single entry point for any Agent starting a session. It points to all documents in the chain and defines coding conventions, architecture constraints, and boundaries.
 
 **One-line summary:** `AGENTS.md` is the door, `STATUS.md` is memory, `SPEC` is the contract, `ADR` is the law, `VERIFY` is the gate. Agent enters → reads memory → works by contract → doesn't break the law → and never grades its own homework.
+
+> *Build the harness. Externalize the state. Separate verification. Then — go read what your agent wrote.* — [Addy Osmani](https://addyosmani.com/blog/long-running-agents/)
