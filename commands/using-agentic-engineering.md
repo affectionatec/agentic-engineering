@@ -35,7 +35,8 @@ Recommend exactly one next move, based on the first gap in the chain:
 
 | Situation | Route to |
 |-----------|----------|
-| No `AGENTS.md` | **agents-md-template** — bootstrap the single source of truth first |
+| Substantial existing codebase, but no/partial chain docs | **existing-project-onboarding** — reverse-engineer the as-built chain first (it bootstraps AGENTS.md too) |
+| No `AGENTS.md` (little or no code yet) | **agents-md-template** — bootstrap the single source of truth first |
 | No PRD and the user has a rough idea | **project-kickoff-prd** — phased dialogue to a prioritized PRD |
 | PRD exists, no specs for the target scope | **technical-specification** — harden the PRD into contracts |
 | A decision fork is on the table ("X or Y?") | **architecture-decision-record** — capture it before it evaporates |

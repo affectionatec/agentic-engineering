@@ -1,6 +1,6 @@
 # Agentic Engineering — Documentation-First Development
 
-> Eight skills that give coding agents persistent memory, zero-ambiguity contracts, a git contract for how code lands, and an independent definition of "done" — the harness layer for long-running, loop-driven development.
+> Nine skills that give coding agents persistent memory, zero-ambiguity contracts, a git contract for how code lands, an independent definition of "done", and a reverse-engineering on-ramp for existing codebases — the harness layer for long-running, loop-driven development.
 
 ## The Core Problem
 
@@ -18,6 +18,7 @@
 - Agent claims "done" when it isn't → **VERIFICATION makes done a verdict, not a claim**
 - Code lands as untraceable commits on main → **GIT WORKFLOW ships each task as an evidence-carrying PR**
 - Crash mid-session loses all progress → **STATUS checkpoints at task granularity**
+- Adopting the workflow on an existing codebase means starting from zero → **ONBOARDING reverse-engineers the as-built chain**
 - Tools each demand their own config → **AGENTS.md is the single entry point**
 
 ## How the Skills Flow
@@ -155,6 +156,21 @@ Each skill is a directory containing a `SKILL.md` (the shared format used by Cla
 
 </details>
 
+<details>
+<summary><b>9. <a href="skills/existing-project-onboarding/SKILL.md">existing-project-onboarding</a> — The On-Ramp</b> · reverse-engineers a brownfield codebase into the as-built chain — changes docs, never code</summary>
+
+*Points the suite at a codebase that already exists: reads the system as it actually is and reconstructs the chain as-built, so the next agent inherits an accurate map instead of guessing.* Produces the as-built `AGENTS.md` + PRD + specs + ADRs + a forward plan + seeded STATUS.
+
+| Mechanism | What it does |
+|-----------|--------------|
+| **Breadth-first scan** | Reverse-engineers stack, real build/test/lint commands, bounded contexts, data model, integrations, and conventions *as practiced* — confirmed with the user before anything is written |
+| **As-built reconstruction** | PRD, specs, and ADRs are dated and marked "reconstructed from code at `<commit>`" — documenting what *is*, never an aspirational redesign |
+| **Reconstructed-ADR exception** | Captures only the load-bearing, still-live decisions; where the original rationale is unrecoverable it says so — it never fabricates a justification |
+| **Forward-only plan** | Marks built modules as the baseline and plans only the gaps, tech debt, and next features — finished work is never re-planned as unbuilt |
+| **Docs, not code** | Onboarding touches no source files and establishes the test-ratchet floor; fixes and refactors follow afterward through the normal chain |
+
+</details>
+
 ## Quick Start
 
 **Claude Code — plugin marketplace (recommended):**
@@ -213,6 +229,8 @@ cp -r agentic-engineering/skills/*/ your-project/.claude/skills/
 | 5 | "Pick up the next task" *(every session)* | [status-tracker](skills/status-tracker/SKILL.md) | Briefing from `docs/status.md`, work resumes where it left off |
 | 6 | "Verify M1-T1" *(dispatches the bundled verifier)* | [independent-verification](skills/independent-verification/SKILL.md) | PASS/FAIL verdict with evidence in `docs/verification-log.md` |
 | 7 | "/run-loop M1" *(unattended)* | [git-workflow](skills/git-workflow/SKILL.md) + [verifier agent](agents/verifier.md) | A queue of verified draft→ready PRs — merging stays yours |
+
+> **Already have a codebase?** Start with [existing-project-onboarding](skills/existing-project-onboarding/SKILL.md) — it reverse-engineers the as-built chain (AGENTS.md, PRD, specs, ADRs, a forward plan, seeded STATUS) from your code, then steps 1–7 carry your *new* work from there.
 
 ## Where This Sits — The Harness Layer
 
