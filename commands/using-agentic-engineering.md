@@ -43,6 +43,7 @@ Recommend exactly one next move, based on the first gap in the chain:
 | Plan exists and a session is starting | **status-tracker** — read the briefing, pick the next unblocked task |
 | Code work is starting, or a built task needs to ship | **git-workflow** — branch per task, draft PR carrying the done condition |
 | A task claims completion / anything sits at 🔍 | **independent-verification** — dispatch the bundled `verifier` sub-agent for a fresh-context verdict |
+| A conversation decision makes a chain doc stale, or the user proposes a new feature / scope change | **documentation-maintenance** — flag the drift, propose the gated update, route the change through the chain |
 | In-Flight Checkpoint is not `none` | **status-tracker** — crash recovery from the checkpoint |
 | The user wants multiple tasks run unattended | point them to **`/run-loop`** — the chain-aware loop driver (verify-gated, never merges) |
 

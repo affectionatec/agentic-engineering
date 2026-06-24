@@ -54,8 +54,9 @@ This project uses a six-document chain. **Read them in order.**
 1. **Start of session:** Read `docs/status.md`. If the In-Flight Checkpoint is not `none`, the previous session crashed — recover from it. Otherwise the latest handoff log entry is your briefing.
 2. **Before coding:** Read the SPEC for the module you're working on. Follow the contract exactly.
 3. **Decision point:** Check `docs/adr/` before making any architectural choice. If no ADR covers it, flag it to the user.
-4. **After each completed task:** Checkpoint `docs/status.md` (In-Flight Checkpoint + module table). Push the task branch and open a draft PR, then request independent verification — the task stays at 🔍 until a verifier with fresh context returns PASS. Never mark your own work ✅; never merge your own PR.
-5. **End of session:** Update `docs/status.md` — module table, header block, append a handoff log entry, reset the In-Flight Checkpoint to `none`.
+4. **Documentation drift:** If anything decided in this session makes a fundamental document (PRD, SPEC, ADR, IMPL PLAN, this file) stale or contradicted — or the user proposes a new feature — flag it the moment it happens and propose the update. **Never edit a fundamental document without the user's explicit approval.** Route the change through the chain before writing code.
+5. **After each completed task:** Checkpoint `docs/status.md` (In-Flight Checkpoint + module table). Push the task branch and open a draft PR, then request independent verification — the task stays at 🔍 until a verifier with fresh context returns PASS. Never mark your own work ✅; never merge your own PR.
+6. **End of session:** Update `docs/status.md` — module table, header block, append a handoff log entry, reset the In-Flight Checkpoint to `none`.
 
 ---
 
@@ -86,6 +87,7 @@ This project uses a six-document chain. **Read them in order.**
 - **Do not create files outside the defined structure** without asking.
 - **Do not install new dependencies** without asking.
 - **Do not modify ADRs.** They are append-only. Supersede with a new ADR if needed.
+- **Do not edit a fundamental document** (PRD, SPEC, ADR, IMPL PLAN, AGENTS.md) without the user's explicit approval — propose the change, then wait for the nod.
 - **Do not skip the status update.** Every session ends with a handoff log entry.
 - **Do not guess when the spec is ambiguous.** Ask the user.
 - **Do not grade your own work.** Marking a task ✅ requires an independent verifier's PASS, not your claim.
