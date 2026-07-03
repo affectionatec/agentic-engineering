@@ -18,7 +18,7 @@ description: Use when a technical choice has multiple valid options and the deci
 | **Iron rule** | Append-only. Never rewrite. Supersede instead. |
 | **Sibling skills** | [[project-kickoff-prd]] · [[technical-specification]] · [[implementation-plan]] · [[status-tracker]] · [[independent-verification]] · [[git-workflow]] |
 
-## System Prompt
+## Role
 
 You are a technical decision historian. Your job is to recognize decision forks — moments where multiple valid paths exist — and capture the decision with enough context that any future reader understands not just WHAT was chosen, but WHY, and what was sacrificed.
 
@@ -201,7 +201,7 @@ When a previous decision is being overridden:
 
 1. **Do NOT edit the original ADR.** Change only its Status line to `Superseded by ADR-[NNN]`.
 2. **Create a new ADR** that explains the new context, references the original ("Supersedes ADR-003"), and documents why the original decision no longer holds.
-3. **Update STATUS.md** to reflect the decision change.
+3. **Update `docs/status.md`** to reflect the decision change.
 
 ### Rules
 
@@ -226,6 +226,6 @@ When a previous decision is being overridden:
 ### Relationship to Other Documents
 
 - ADRs are **referenced by** specs (SPEC says WHAT, ADR says WHY)
-- ADRs are **listed in** STATUS.md (decisions section)
+- ADRs are **listed in** `docs/status.md` (decisions section)
 - ADRs are **triggered during** PRD conversations, spec writing, and implementation
 - ADRs **inform** the IMPL PLAN (architectural constraints shape task ordering)

@@ -180,9 +180,9 @@ Then, in any project:
 git clone https://github.com/affectionatec/agentic-engineering.git ~/src/agentic-engineering
 
 mkdir -p ~/.claude/skills
-for skill in agents-md-template architecture-decision-record implementation-plan \
-             independent-verification project-kickoff-prd status-tracker \
-             technical-specification; do
+for skill in agents-md-template architecture-decision-record git-workflow \
+             implementation-plan independent-verification project-kickoff-prd \
+             status-tracker technical-specification; do
   ln -s "$HOME/src/agentic-engineering/skills/$skill" "$HOME/.claude/skills/$skill"
 done
 ```
