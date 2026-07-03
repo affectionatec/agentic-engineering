@@ -215,7 +215,7 @@ When a previous decision is being overridden:
 
 ### Anti-Patterns (Do Not)
 
-1. **Do not write ADRs after implementation.** "We chose X because we already built it" is not a valid rationale.
+1. **Do not write ADRs after implementation.** "We chose X because we already built it" is not a valid rationale. (One narrow exception: during brownfield onboarding, [[existing-project-onboarding]] may reconstruct load-bearing, still-live decisions — clearly labeled `Accepted (reconstructed as-built)`, never with invented rationale.)
 2. **Do not edit accepted ADRs.** If the decision changes, supersede — don't rewrite history.
 3. **Do not create ADRs for non-decisions.** "We're using TypeScript" because the whole team already uses it and no one questioned it — that's not a decision, it's a default. Only record moments of genuine deliberation.
 4. **Do not strawman rejected options.** Present them fairly. A future reader might revisit them if context changes.

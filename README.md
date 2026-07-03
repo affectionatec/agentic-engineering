@@ -201,7 +201,7 @@ Then, in any project:
 - **`/using-agentic-engineering`** — the entry point: assesses which chain documents exist, reports where the project stands, and routes you to the right skill
 - **`/run-loop M2`** — the chain-aware loop driver: branch → build → draft PR → dispatch the verifier → checkpoint → next task. Stops on the circuit breaker (3 FAILs) or the task budget, and **never merges**
 - A ready-made **`verifier` sub-agent** ships with the plugin (`@agent-agentic-engineering:verifier`) — fresh context by construction, writes nothing but the verification log
-- The eight skills **auto-trigger** from their frontmatter descriptions ("write the spec", "where are we", "verify this task") — or invoke one **explicitly**: `/agentic-engineering:independent-verification`, or just say *"use the project-kickoff-prd skill: I want to build …"*
+- The ten skills **auto-trigger** from their frontmatter descriptions ("write the spec", "where are we", "verify this task") — or invoke one **explicitly**: `/agentic-engineering:independent-verification`, or just say *"use the project-kickoff-prd skill: I want to build …"*
 
 <details>
 <summary><b>Manual install</b> — personal symlinks · single project · Codex · Cursor / Copilot / any agent</summary>
@@ -212,9 +212,10 @@ Then, in any project:
 git clone https://github.com/affectionatec/agentic-engineering.git ~/src/agentic-engineering
 
 mkdir -p ~/.claude/skills
-for skill in agents-md-template architecture-decision-record git-workflow \
-             implementation-plan independent-verification project-kickoff-prd \
-             status-tracker technical-specification; do
+for skill in agents-md-template architecture-decision-record \
+             documentation-maintenance existing-project-onboarding \
+             git-workflow implementation-plan independent-verification \
+             project-kickoff-prd status-tracker technical-specification; do
   ln -s "$HOME/src/agentic-engineering/skills/$skill" "$HOME/.claude/skills/$skill"
 done
 ```
