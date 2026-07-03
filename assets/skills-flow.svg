@@ -18,6 +18,9 @@
     <marker id="m-teal" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
       <path d="M 0 0 L 10 5 L 0 10 z" fill="#2dd4bf"/>
     </marker>
+    <marker id="m-pink" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#f472b6"/>
+    </marker>
   </defs>
 
   <style>
@@ -74,6 +77,21 @@
 
   <!-- IMPL PLAN down into the loop -->
   <path class="edge" d="M 786 114 L 786 196" marker-end="url(#m-gray)"/>
+
+  <!-- brownfield on-ramp: onboarding reconstructs the chain for existing code -->
+  <rect class="box" x="36" y="134" width="204" height="58" rx="12" stroke="#fdba74" stroke-width="1.6"/>
+  <text class="title" x="138" y="158">🧭 ONBOARDING</text>
+  <text class="sub" x="138" y="178">existing code → as-built chain</text>
+  <path d="M 138 134 L 138 118" stroke="#fbbf24" stroke-width="1.4" stroke-dasharray="5 5" fill="none" marker-end="url(#m-amber)"/>
+
+  <!-- doc maintenance: drift from the loop, gated updates back into the chain -->
+  <rect class="box" x="420" y="134" width="250" height="58" rx="12" stroke="#f472b6" stroke-width="1.6"/>
+  <text class="title" x="545" y="158">🧹 DOC MAINTENANCE</text>
+  <text class="sub" x="545" y="178">gated, user-approved drift fixes</text>
+  <path d="M 480 134 C 460 124, 420 122, 395 120" stroke="#f472b6" stroke-width="1.4" stroke-dasharray="5 5" fill="none" marker-end="url(#m-pink)"/>
+  <path d="M 560 134 C 563 128, 566 124, 569 118" stroke="#f472b6" stroke-width="1.4" stroke-dasharray="5 5" fill="none" marker-end="url(#m-pink)"/>
+  <path d="M 610 250 C 615 225, 630 210, 638 196" stroke="#f472b6" stroke-width="1.4" stroke-dasharray="5 5" fill="none" marker-end="url(#m-pink)"/>
+  <text class="lbl" x="730" y="222" fill="#f472b6">drift detected — any conversation</text>
 
   <!-- execution loop container -->
   <rect x="36" y="200" width="1208" height="348" rx="16" fill="#162136" opacity="0.6" stroke="#334155" stroke-width="1.4"/>
