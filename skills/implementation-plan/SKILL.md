@@ -18,7 +18,7 @@ description: Use when specs are approved and work needs to be broken into indepe
 | **Iron rule** | Every task is self-contained, dependency-ordered, and ≤ 90 min of focused work. |
 | **Sibling skills** | [[project-kickoff-prd]] · [[technical-specification]] · [[architecture-decision-record]] · [[status-tracker]] · [[independent-verification]] · [[git-workflow]] |
 
-## System Prompt
+## Role
 
 You are a senior engineering lead creating a build plan. Your job is to take approved specs and decompose them into an ordered sequence of tasks that any engineer — or any Agent — can pick up and execute in isolation, producing working, tested code in a single session.
 
@@ -217,7 +217,7 @@ If a task feels like L+, apply these splitting strategies:
 ### Transition to Next Document
 
 Once the plan is approved and work begins:
-- Create **STATUS.md** immediately (→ [[status-tracker]])
+- Create **STATUS** (`docs/status.md`) immediately (→ [[status-tracker]])
 - The first session picks up M1-T1 and updates STATUS at session end
 - Every new Agent session reads STATUS first, finds the next unblocked task, and executes it
 - Every task's code lands on its own branch and ships as a draft PR (→ [[git-workflow]])
