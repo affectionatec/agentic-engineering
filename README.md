@@ -1,6 +1,6 @@
 # Agentic Engineering — Documentation-First Development
 
-> Eight skills that give coding agents persistent memory, zero-ambiguity contracts, a git contract for how code lands, and an independent definition of "done" — the harness layer for long-running, loop-driven development.
+> Nine skills that give coding agents persistent memory, zero-ambiguity contracts, documentation that stays true as the project evolves, a git contract for how code lands, and an independent definition of "done" — the harness layer for long-running, loop-driven development.
 
 ## The Core Problem
 
@@ -18,6 +18,7 @@
 - Agent claims "done" when it isn't → **VERIFICATION makes done a verdict, not a claim**
 - Code lands as untraceable commits on main → **GIT WORKFLOW ships each task as an evidence-carrying PR**
 - Crash mid-session loses all progress → **STATUS checkpoints at task granularity**
+- Docs say one thing, the code does another → **DOC MAINTENANCE keeps the chain true to reality**
 - Tools each demand their own config → **AGENTS.md is the single entry point**
 
 ## How the Skills Flow
@@ -155,6 +156,21 @@ Each skill is a directory containing a `SKILL.md` (the shared format used by Cla
 
 </details>
 
+<details>
+<summary><b>9. <a href="skills/documentation-maintenance/SKILL.md">documentation-maintenance</a> — The Caretaker</b> · keeps PRD/SPEC/ADR/IMPL PLAN true as the project evolves — gated by user approval</summary>
+
+*The chain is only worth trusting if it stays true. When the conversation outruns the documents, this skill catches the drift, proposes the fix, and folds it back in — never without the user's nod.* Produces gated updates to the affected chain docs.
+
+| Mechanism | What it does |
+|-----------|--------------|
+| **Drift detection** | Watches every conversation for decisions the docs don't yet reflect — scope, contract, decision, plan, convention, as-built. The test: *would a fresh agent reading only the docs now build the wrong thing?* |
+| **Permission gate** | Never edits a fundamental doc silently. Surfaces a diff-level proposal — exact doc, section, and change — and waits for the user's explicit yes |
+| **New-feature workflow** | "I want to add X" routes through PRD → ADR → SPEC → IMPL PLAN *before* any code, so every feature lands with a contract, a decision record, and a plan — not as an undocumented patch |
+| **By-the-rules application** | Append-only ADRs, versioned specs, protected completed tasks — maintenance updates reality without rewriting history |
+| **Nothing falls through** | Applied changes hit the STATUS handoff log; drift the user defers parks as an Open Item, never a forgotten contradiction |
+
+</details>
+
 ## Quick Start
 
 **Claude Code — plugin marketplace (recommended):**
@@ -213,6 +229,7 @@ cp -r agentic-engineering/skills/*/ your-project/.claude/skills/
 | 5 | "Pick up the next task" *(every session)* | [status-tracker](skills/status-tracker/SKILL.md) | Briefing from `docs/status.md`, work resumes where it left off |
 | 6 | "Verify M1-T1" *(dispatches the bundled verifier)* | [independent-verification](skills/independent-verification/SKILL.md) | PASS/FAIL verdict with evidence in `docs/verification-log.md` |
 | 7 | "/run-loop M1" *(unattended)* | [git-workflow](skills/git-workflow/SKILL.md) + [verifier agent](agents/verifier.md) | A queue of verified draft→ready PRs — merging stays yours |
+| ↻ | "I want to add feature X" / "the spec is stale" *(any time after kickoff)* | [documentation-maintenance](skills/documentation-maintenance/SKILL.md) | Gated updates to the affected docs, then the change flows through the chain |
 
 ## Where This Sits — The Harness Layer
 
