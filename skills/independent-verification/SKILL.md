@@ -1,6 +1,6 @@
 ---
 name: independent-verification
-description: Use when a task or milestone claims completion and must be verified before being marked done, when acting as a verifier sub-agent checking a producer's work, or when a "done" claim needs evidence. Triggers on "verify this task", "is this actually done", "acceptance check", "run verification", any completion claim, any ⬜/🟡 → ✅ status transition, or dispatching a maker-checker review loop.
+description: Use when a task or milestone claims completion and must be verified before being marked done, when acting as a verifier sub-agent checking a producer's work, or when a "done" claim needs evidence. Triggers on "verify this task", "is this actually done", "acceptance check", "run verification", any completion claim, any 🔍 → ✅ status transition, or dispatching a maker-checker review loop.
 ---
 
 # Independent Verification — The Maker-Checker Gate

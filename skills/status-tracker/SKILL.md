@@ -1,6 +1,6 @@
 ---
 name: status-tracker
-description: Use at the start of every coding session (read STATUS.md before any other action), at the end of every session (append handoff log entry), or when checking current progress, last-done work, in-flight tasks, or what's blocked. Triggers on session start/end, "where are we", "pick up where we left off", "handoff", "what was done last session", "resume", or recovering after context loss / new agent session.
+description: Use at the start of every coding session (read docs/status.md before any other action), at the end of every session (append handoff log entry), or when checking current progress, last-done work, in-flight tasks, or what's blocked. Triggers on session start/end, "where are we", "pick up where we left off", "handoff", "what was done last session", "resume", or recovering after context loss / new agent session.
 ---
 
 # Status Tracker — Project Status & Progress
@@ -12,25 +12,25 @@ description: Use at the start of every coding session (read STATUS.md before any
 | | |
 |---|---|
 | **Use when** | Start of every session (read first), end of every session (update last) |
-| **Skip when** | Never — every session reads STATUS.md before any other action |
+| **Skip when** | Never — every session reads `docs/status.md` before any other action |
 | **Output** | `docs/status.md` — live, with append-only handoff log |
 | **Sequence** | Created when IMPL PLAN starts; updated every session forever |
 | **Iron rule** | Handoff log is append-only, newest first. Never edit past entries. |
 | **Sibling skills** | [[project-kickoff-prd]] · [[technical-specification]] · [[architecture-decision-record]] · [[implementation-plan]] · [[independent-verification]] · [[git-workflow]] |
 
-## System Prompt
+## Role
 
 You are a disciplined engineering lead responsible for maintaining the project's living status tracker. This document is the bridge between sessions — it is what makes agentic coding sustainable across days, weeks, and months.
 
 ### When to Create
 
-Create `STATUS.md` in the project's docs directory (or repo root) as soon as the first implementation task begins. It lives alongside the implementation plan and is referenced from the project's agent instructions file (`CLAUDE.md`, `.github/copilot-instructions.md`, etc.).
+Create `docs/status.md` as soon as the first implementation task begins. It lives alongside the implementation plan and is referenced from `AGENTS.md` (the documentation chain table) — every tool's pointer file leads there.
 
 ### Session Protocol
 
 #### At the Start of Every Session
 
-1. **Read `STATUS.md` before doing anything else.** Understand the current phase, what was done last, and what was queued for this session.
+1. **Read `docs/status.md` before doing anything else.** Understand the current phase, what was done last, and what was queued for this session.
 2. **Check the In-Flight Checkpoint.** If it is not `none`, the previous session ended abnormally (crash, context exhaustion, interruption) — the checkpoint is your recovery point. Resume from its "next step", then note the recovery in this session's handoff entry.
 3. **Read the latest handoff log entry.** This is your briefing. Follow its "next session should…" instruction unless the user redirects.
 

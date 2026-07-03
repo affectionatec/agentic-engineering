@@ -1,6 +1,6 @@
 # Agentic Engineering — Documentation-First Development
 
-> Nine skills that give coding agents persistent memory, zero-ambiguity contracts, a git contract for how code lands, an independent definition of "done", and a reverse-engineering on-ramp for existing codebases — the harness layer for long-running, loop-driven development.
+> Ten skills that give coding agents persistent memory, zero-ambiguity contracts, documentation that stays true as the project evolves, a git contract for how code lands, an independent definition of "done", and a reverse-engineering on-ramp for existing codebases — the harness layer for long-running, loop-driven development.
 
 ## The Core Problem
 
@@ -18,6 +18,7 @@
 - Agent claims "done" when it isn't → **VERIFICATION makes done a verdict, not a claim**
 - Code lands as untraceable commits on main → **GIT WORKFLOW ships each task as an evidence-carrying PR**
 - Crash mid-session loses all progress → **STATUS checkpoints at task granularity**
+- Docs say one thing, the code does another → **DOC MAINTENANCE keeps the chain true to reality**
 - Adopting the workflow on an existing codebase means starting from zero → **ONBOARDING reverse-engineers the as-built chain**
 - Tools each demand their own config → **AGENTS.md is the single entry point**
 
@@ -157,7 +158,22 @@ Each skill is a directory containing a `SKILL.md` (the shared format used by Cla
 </details>
 
 <details>
-<summary><b>9. <a href="skills/existing-project-onboarding/SKILL.md">existing-project-onboarding</a> — The On-Ramp</b> · reverse-engineers a brownfield codebase into the as-built chain — changes docs, never code</summary>
+<summary><b>9. <a href="skills/documentation-maintenance/SKILL.md">documentation-maintenance</a> — The Caretaker</b> · keeps PRD/SPEC/ADR/IMPL PLAN true as the project evolves — gated by user approval</summary>
+
+*The chain is only worth trusting if it stays true. When the conversation outruns the documents, this skill catches the drift, proposes the fix, and folds it back in — never without the user's nod.* Produces gated updates to the affected chain docs.
+
+| Mechanism | What it does |
+|-----------|--------------|
+| **Drift detection** | Watches every conversation for decisions the docs don't yet reflect — scope, contract, decision, plan, convention, as-built. The test: *would a fresh agent reading only the docs now build the wrong thing?* |
+| **Permission gate** | Never edits a fundamental doc silently. Surfaces a diff-level proposal — exact doc, section, and change — and waits for the user's explicit yes |
+| **New-feature workflow** | "I want to add X" routes through PRD → ADR → SPEC → IMPL PLAN *before* any code, so every feature lands with a contract, a decision record, and a plan — not as an undocumented patch |
+| **By-the-rules application** | Append-only ADRs, versioned specs, protected completed tasks — maintenance updates reality without rewriting history |
+| **Nothing falls through** | Applied changes hit the STATUS handoff log; drift the user defers parks as an Open Item, never a forgotten contradiction |
+
+</details>
+
+<details>
+<summary><b>10. <a href="skills/existing-project-onboarding/SKILL.md">existing-project-onboarding</a> — The On-Ramp</b> · reverse-engineers a brownfield codebase into the as-built chain — changes docs, never code</summary>
 
 *Points the suite at a codebase that already exists: reads the system as it actually is and reconstructs the chain as-built, so the next agent inherits an accurate map instead of guessing.* Produces the as-built `AGENTS.md` + PRD + specs + ADRs + a forward plan + seeded STATUS.
 
@@ -196,9 +212,9 @@ Then, in any project:
 git clone https://github.com/affectionatec/agentic-engineering.git ~/src/agentic-engineering
 
 mkdir -p ~/.claude/skills
-for skill in agents-md-template architecture-decision-record implementation-plan \
-             independent-verification project-kickoff-prd status-tracker \
-             technical-specification; do
+for skill in agents-md-template architecture-decision-record git-workflow \
+             implementation-plan independent-verification project-kickoff-prd \
+             status-tracker technical-specification; do
   ln -s "$HOME/src/agentic-engineering/skills/$skill" "$HOME/.claude/skills/$skill"
 done
 ```
@@ -229,6 +245,7 @@ cp -r agentic-engineering/skills/*/ your-project/.claude/skills/
 | 5 | "Pick up the next task" *(every session)* | [status-tracker](skills/status-tracker/SKILL.md) | Briefing from `docs/status.md`, work resumes where it left off |
 | 6 | "Verify M1-T1" *(dispatches the bundled verifier)* | [independent-verification](skills/independent-verification/SKILL.md) | PASS/FAIL verdict with evidence in `docs/verification-log.md` |
 | 7 | "/run-loop M1" *(unattended)* | [git-workflow](skills/git-workflow/SKILL.md) + [verifier agent](agents/verifier.md) | A queue of verified draft→ready PRs — merging stays yours |
+| ↻ | "I want to add feature X" / "the spec is stale" *(any time after kickoff)* | [documentation-maintenance](skills/documentation-maintenance/SKILL.md) | Gated updates to the affected docs, then the change flows through the chain |
 
 > **Already have a codebase?** Start with [existing-project-onboarding](skills/existing-project-onboarding/SKILL.md) — it reverse-engineers the as-built chain (AGENTS.md, PRD, specs, ADRs, a forward plan, seeded STATUS) from your code, then steps 1–7 carry your *new* work from there.
 
