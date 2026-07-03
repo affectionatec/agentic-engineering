@@ -24,9 +24,9 @@
 
 ## How the Skills Flow
 
-![How the skills flow — from AGENTS.md through the planning chain, the verify-gated execution loop, and the human merge gate](assets/skills-flow.svg)
+![How the skills flow — the brownfield on-ramp and planning chain, the gated doc-maintenance loop, the verify-gated execution loop, and the human merge gate](assets/skills-flow.svg)
 
-ADRs can be triggered at any point along the chain — whenever a decision fork appears in PRD, SPEC, or IMPL PLAN work. VERIFY loops every task: build → independent verdict → only PASS marks ✅. STATUS loops every session forever. Code travels per GIT WORKFLOW: a branch per task, a draft PR carrying the done condition, ready only on PASS, merged only by a human.
+ADRs can be triggered at any point along the chain — whenever a decision fork appears in PRD, SPEC, or IMPL PLAN work. VERIFY loops every task: build → independent verdict → only PASS marks ✅. STATUS loops every session forever. Code travels per GIT WORKFLOW: a branch per task, a draft PR carrying the done condition, ready only on PASS, merged only by a human. Projects with an existing codebase enter through ONBOARDING, which reverse-engineers the as-built chain before the flow begins; and whenever a conversation makes a document stale, DOC MAINTENANCE catches the drift and folds gated, user-approved updates back into the chain.
 
 ## The Skills
 
@@ -295,7 +295,7 @@ This suite stands on published patterns and prior art:
 
 ---
 
-**One-line summary:** `AGENTS.md` is the door, `STATUS.md` is memory, `SPEC` is the contract, `ADR` is the law, `VERIFY` is the gate, and `GIT WORKFLOW` is the road through it. Agent enters → reads memory → works by contract → doesn't break the law → ships every task down the road → and never grades its own homework.
+**One-line summary:** `AGENTS.md` is the door, `ONBOARDING` is the on-ramp for code that already exists, `STATUS.md` is memory, `SPEC` is the contract, `ADR` is the law, `VERIFY` is the gate, `GIT WORKFLOW` is the road through it, and `DOC MAINTENANCE` is the caretaker that keeps the map true. Agent enters → reads memory → works by contract → doesn't break the law → ships every task down the road → keeps the docs honest → and never grades its own homework.
 
 > *Build the harness. Externalize the state. Separate verification. Then — go read what your agent wrote.* — [Addy Osmani](https://addyosmani.com/blog/long-running-agents/)
 
