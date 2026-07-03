@@ -2,8 +2,8 @@
   "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
   "name": "agentic-engineering",
   "displayName": "Agentic Engineering",
-  "version": "0.3.0",
-  "description": "Documentation-first development for AI coding agents — ten skills (persistent memory, zero-ambiguity specs, append-only decisions, git contract, independent verification gate, gated doc maintenance, brownfield onboarding) plus a bundled verifier agent and a /run-loop driver.",
+  "version": "0.4.0",
+  "description": "Documentation-first development for AI coding agents — ten chain skills (persistent memory, zero-ambiguity specs, append-only decisions, git contract, independent verification gate, gated doc maintenance, brownfield onboarding) plus a bundled verifier agent and router + run-loop drivers shipped as both commands and skills for cross-harness use (Claude Code, Copilot CLI, Codex).",
   "author": {
     "name": "affectionatec",
     "url": "https://github.com/affectionatec"
