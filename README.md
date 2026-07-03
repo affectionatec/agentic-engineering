@@ -1,6 +1,6 @@
 # Agentic Engineering — Documentation-First Development
 
-> Ten skills that give coding agents persistent memory, zero-ambiguity contracts, documentation that stays true as the project evolves, a git contract for how code lands, an independent definition of "done", and a reverse-engineering on-ramp for existing codebases — the harness layer for long-running, loop-driven development.
+> Ten chain skills that give coding agents persistent memory, zero-ambiguity contracts, documentation that stays true as the project evolves, a git contract for how code lands, an independent definition of "done", and a reverse-engineering on-ramp for existing codebases — plus a router and a verify-gated loop driver, shipped as both commands and skills. The harness layer for long-running, loop-driven development.
 
 ## The Core Problem
 
@@ -201,7 +201,8 @@ Then, in any project:
 - **`/using-agentic-engineering`** — the entry point: assesses which chain documents exist, reports where the project stands, and routes you to the right skill
 - **`/run-loop M2`** — the chain-aware loop driver: branch → build → draft PR → dispatch the verifier → checkpoint → next task. Stops on the circuit breaker (3 FAILs) or the task budget, and **never merges**
 - A ready-made **`verifier` sub-agent** ships with the plugin (`@agent-agentic-engineering:verifier`) — fresh context by construction, writes nothing but the verification log
-- The ten skills **auto-trigger** from their frontmatter descriptions ("write the spec", "where are we", "verify this task") — or invoke one **explicitly**: `/agentic-engineering:independent-verification`, or just say *"use the project-kickoff-prd skill: I want to build …"*
+- The ten chain skills **auto-trigger** from their frontmatter descriptions ("write the spec", "where are we", "verify this task") — or invoke one **explicitly**: `/agentic-engineering:independent-verification`, or just say *"use the project-kickoff-prd skill: I want to build …"*
+- **Not on Claude Code?** The router and the loop driver also ship **as skills** (`using-agentic-engineering`, `run-loop`), because some harnesses that read the shared plugin format — e.g. **GitHub Copilot CLI** — load plugin *skills* but not Claude-style plugin *commands*. There, just say *"use the using-agentic-engineering skill"* or *"use the run-loop skill: M2"*. The slash commands are thin aliases for the same skills.
 
 <details>
 <summary><b>Manual install</b> — personal symlinks · single project · Codex · Cursor / Copilot / any agent</summary>
@@ -215,7 +216,8 @@ mkdir -p ~/.claude/skills
 for skill in agents-md-template architecture-decision-record \
              documentation-maintenance existing-project-onboarding \
              git-workflow implementation-plan independent-verification \
-             project-kickoff-prd status-tracker technical-specification; do
+             project-kickoff-prd run-loop status-tracker \
+             technical-specification using-agentic-engineering; do
   ln -s "$HOME/src/agentic-engineering/skills/$skill" "$HOME/.claude/skills/$skill"
 done
 ```
@@ -266,7 +268,7 @@ How the chain maps to the convergent primitives of [long-running agents](https:/
 | Decision history that can't be silently rewritten | ADR (append-only, supersede-only) |
 | Worktrees — parallel agent isolation | [git-workflow](skills/git-workflow/SKILL.md): one branch + PR per task, one worktree per agent |
 | Sub-agents — producer vs. checker | the bundled [`verifier` agent](agents/verifier.md): fresh context by construction |
-| Automations — run until done | [`/run-loop`](commands/run-loop.md): chain-aware driver with circuit breaker; merging stays human |
+| Automations — run until done | [`/run-loop`](skills/run-loop/SKILL.md): chain-aware driver with circuit breaker; merging stays human |
 
 ### Loop Safety — Non-Negotiables When a Loop Drives This Chain
 
