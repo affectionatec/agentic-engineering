@@ -11,7 +11,7 @@
       "name": "agentic-engineering",
       "displayName": "Agentic Engineering",
       "source": "./",
-      "description": "Eight skills forming a documentation chain: AGENTS.md entry point, PRD, technical specs, ADRs, implementation plans, status tracking with crash recovery, a git workflow with evidence-carrying PRs, and an independent verification gate — plus a bundled verifier agent and a /run-loop driver. The harness layer for long-running, loop-driven development.",
+      "description": "Ten skills forming a documentation chain: AGENTS.md entry point, PRD, technical specs, ADRs, implementation plans, status tracking with crash recovery, a git workflow with evidence-carrying PRs, an independent verification gate, gated documentation maintenance, and a brownfield onboarding on-ramp — plus a bundled verifier agent and a /run-loop driver. The harness layer for long-running, loop-driven development.",
       "license": "MIT",
       "keywords": [
         "skills",
